@@ -2,6 +2,10 @@ import React from 'react';
 import './About.css';
 import hospitalImg from '../assest/aboutus/hospital.jpg';
 import doctorImg from '../assest/aboutus/doctor.jpg';
+import doctor1 from '../assest/aboutus/doctor1.jpg';
+import doctor2 from '../assest/aboutus/doctor2.jpg';
+import doctor3 from '../assest/aboutus/doctor3.jpg';
+import doctor4 from '../assest/aboutus/doctor4.jpg';
 import { useNavigate } from 'react-router-dom';
 
 export default function About() {
@@ -77,6 +81,108 @@ export default function About() {
           <div className="metric-label">Specialist Doctors</div>
         </div>
       </div>
+
+      <section className="leadership">
+        <div className="leadership-inner">
+          <div className="leadership-header">
+            <div>
+              <h3>Leadership & Vision</h3>
+              <p>Our executive team combines decades of medical practice with strategic healthcare management expertise.</p>
+            </div>
+            <div className="leadership-cta">
+              <button className="link-button" onClick={() => navigate('/team')}>Meet the Full Board →</button>
+            </div>
+          </div>
+
+          <div className="team-grid">
+            <div className="team-card">
+              <img src={doctor1} alt="Dr. Sarah Chen" className="team-photo" />
+              <div className="team-meta">
+                <div className="team-name">Dr. Sarah Chen</div>
+                <div className="team-role">Chief Medical Officer</div>
+              </div>
+            </div>
+
+            <div className="team-card">
+              <img src={doctor2} alt="Marcus Thorne" className="team-photo" />
+              <div className="team-meta">
+                <div className="team-name">Marcus Thorne</div>
+                <div className="team-role">Executive Chairman</div>
+              </div>
+            </div>
+
+            <div className="team-card">
+              <img src={doctor3} alt="Dr. James Wilson" className="team-photo" />
+              <div className="team-meta">
+                <div className="team-name">Dr. James Wilson</div>
+                <div className="team-role">Head of Clinical Ops</div>
+              </div>
+            </div>
+
+            <div className="team-card">
+              <img src={doctor4} alt="Elena Rodriguez" className="team-photo" />
+              <div className="team-meta">
+                <div className="team-name">Elena Rodriguez</div>
+                <div className="team-role">Director of Patient Exp.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+        <section className="cta-band">
+          <div className="cta-inner">
+            <div className="cta-text">
+              <h4>Experience CareLink Near You</h4>
+              <p>From specialized surgical centers to local community clinics, find the facility that fits your healthcare needs.</p>
+            </div>
+            <div className="cta-action">
+              <button className="btn-outline" onClick={() => navigate('/locations')}>Visit Our Facilities</button>
+            </div>
+          </div>
+        </section>
+
+        <section className="about-footer-extended">
+          <div className="about-footer-inner">
+            <div className="footer-left">
+              <h5>CareLink</h5>
+              <p>Redefining healthcare through compassion and innovation. Your health, our priority.</p>
+              <div className="socials">
+                <span aria-hidden>🔗</span>
+                <span aria-hidden>🐦</span>
+                <span aria-hidden>🔊</span>
+              </div>
+            </div>
+
+            <div className="footer-columns">
+              <div className="footer-col">
+                <h6>Resources</h6>
+                <ul>
+                  <li>Careers</li>
+                  <li>Locations</li>
+                  <li>Newsroom</li>
+                </ul>
+              </div>
+
+              <div className="footer-col">
+                <h6>Legal</h6>
+                <ul>
+                  <li>Privacy Policy</li>
+                  <li>Terms of Service</li>
+                  <li>Patient Rights</li>
+                </ul>
+              </div>
+
+              <div className="footer-col support-col">
+                <h6>Support</h6>
+                <div className="support-number">24/7 Helpline</div>
+                <div className="support-phone">1-800-CARELINK</div>
+              </div>
+            </div>
+          </div>
+        </section>
+      
+
+      
     </div>
   );
 }
