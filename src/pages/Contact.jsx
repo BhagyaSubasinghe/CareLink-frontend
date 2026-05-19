@@ -412,72 +412,52 @@ const Contact = () => {
           </Paper>
         </Grid>
 
-        {/* FAQ & Quick Actions */}
+        {/* Quick Contact + Department Directory */}
         <Grid item xs={12} md={5}>
-          {/* Quick FAQ */}
-          <Card elevation={2} sx={{ mb: 3, borderRadius: '8px' }}>
-            <CardContent>
-              <Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold' }}>
-                ❓ Quick FAQs
+          <Card elevation={3} sx={{ mb: 3, borderRadius: '12px', overflow: 'hidden' }}>
+            <Box sx={{ background: 'linear-gradient(180deg,#08306b,#0b5ed7)', color: '#fff', p: 3 }}>
+              <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                Quick Contact
               </Typography>
-              <Stack spacing={1.5}>
-                {[
-                  { q: 'How do I book an appointment?', a: 'Navigate to Doctors and select your preferred doctor.' },
-                  { q: 'Can I cancel my appointment?', a: 'Yes, cancel with 24-hour notice from your dashboard.' },
-                  { q: 'Is telehealth available?', a: 'Yes, select telehealth when booking appointments.' },
-                ].map((faq, idx) => (
-                  <Box key={idx}>
-                    <Typography variant="body2" sx={{ fontWeight: 'bold', color: '#0ea5a9' }}>
-                      {faq.q}
-                    </Typography>
-                    <Typography variant="caption" sx={{ color: '#666' }}>
-                      {faq.a}
-                    </Typography>
-                  </Box>
-                ))}
+              <Typography variant="body2" sx={{ opacity: 0.9, mt: 1 }}>
+                24/7 Helpline
+              </Typography>
+            </Box>
+            <CardContent sx={{ background: '#0b5ed7', color: '#fff' }}>
+              <Stack spacing={2}>
+                <Box>
+                  <Typography variant="caption" sx={{ color: '#cde7ff' }}>Phone</Typography>
+                  <Typography variant="h6" sx={{ fontWeight: '900', color: '#fff' }}>1-800-CARELINK</Typography>
+                </Box>
+
+                <Box>
+                  <Typography variant="caption" sx={{ color: '#cde7ff' }}>Email Support</Typography>
+                  <Typography variant="body2" sx={{ color: '#fff' }}>contact@carelink.health</Typography>
+                </Box>
+
+                <Box>
+                  <Typography variant="caption" sx={{ color: '#cde7ff' }}>Physical Address</Typography>
+                  <Typography variant="body2" sx={{ color: '#fff' }}>123 Healthcare Plaza, Medical District</Typography>
+                </Box>
               </Stack>
             </CardContent>
           </Card>
 
-          {/* Support Info */}
-          <Card elevation={2} sx={{ borderRadius: '8px' }}>
-            <CardContent>
-              <Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold' }}>
-                💡 Smart Support Features
-              </Typography>
-              <Stack spacing={2}>
-                <Box>
-                  <Typography variant="body2" sx={{ fontWeight: 'bold', color: '#0ea5a9', mb: 0.5 }}>
-                    ✓ Real-time Response Tracking
-                  </Typography>
-                  <Typography variant="caption" sx={{ color: '#666' }}>
-                    Get automatic updates on your ticket status
-                  </Typography>
-                </Box>
-                <Box>
-                  <Typography variant="body2" sx={{ fontWeight: 'bold', color: '#0ea5a9', mb: 0.5 }}>
-                    ✓ Priority Queue System
-                  </Typography>
-                  <Typography variant="caption" sx={{ color: '#666' }}>
-                    Urgent issues prioritized for faster response
-                  </Typography>
-                </Box>
-                <Box>
-                  <Typography variant="body2" sx={{ fontWeight: 'bold', color: '#0ea5a9', mb: 0.5 }}>
-                    ✓ Multi-Channel Support
-                  </Typography>
-                  <Typography variant="caption" sx={{ color: '#666' }}>
-                    Reach us via email, phone, chat, or message
-                  </Typography>
-                </Box>
-                <Box>
-                  <Typography variant="body2" sx={{ fontWeight: 'bold', color: '#0ea5a9', mb: 0.5 }}>
-                    ✓ AI-Powered Suggestions
-                  </Typography>
-                  <Typography variant="caption" sx={{ color: '#666' }}>
-                    Get instant solutions to common issues
-                  </Typography>
-                </Box>
+          <Card elevation={1} sx={{ borderRadius: '12px', overflow: 'hidden' }}>
+            <CardContent sx={{ background: '#eef8ff' }}>
+              <Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold', color: '#08306b' }}>Department Directory</Typography>
+              <Stack spacing={1.5}>
+                {[
+                  { name: 'Emergency', ext: '911' },
+                  { name: 'Pharmacy', ext: 'Ext. 402' },
+                  { name: 'Laboratory', ext: 'Ext. 515' },
+                  { name: 'Billing Dept.', ext: 'Ext. 209' },
+                ].map((d) => (
+                  <Box key={d.name} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: '8px 10px', borderRadius: '8px', background: '#fff' }}>
+                    <Typography variant="body2" sx={{ color: '#08306b' }}>{d.name}</Typography>
+                    <Typography variant="body2" sx={{ color: '#2563eb', fontWeight: 700 }}>{d.ext}</Typography>
+                  </Box>
+                ))}
               </Stack>
             </CardContent>
           </Card>
