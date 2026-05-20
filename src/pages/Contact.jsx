@@ -27,6 +27,7 @@ import {
   Message,
   CheckCircle,
   Send,
+  DirectionsCarOutlined
 } from '@mui/icons-material';
 import './Contact.css';
 
@@ -163,53 +164,38 @@ const Contact = () => {
   };
 
   return (
-    <Container maxWidth="lg" className="contact-container">
-      {/* Header */}
-      <Box className="contact-hero" sx={{ mb: 4 }}>
-        <Box className="contact-hero-panel">
-          <Typography variant="h3" component="h1" sx={{ fontWeight: 'bold', mb: 1, color: '#0ea5a9' }}>
+    <Box sx={{ backgroundColor: '#ffffff', minHeight: '100vh' }}>
+      
+      {/* Hero Section - Full Width */}
+      <Box sx={{ 
+        background: 'linear-gradient(180deg, #e3f2fd 0%, #ffffff 100%)', 
+        pt: { xs: 6, md: 8 }, 
+        pb: { xs: 10, md: 12 },
+        width: '100vw',
+        ml: 'calc(50% - 50vw)',
+        px: { xs: 2, sm: 3, md: 4 }
+      }}>
+        <Container maxWidth="md" sx={{ textAlign: 'center' }}>
+          <Typography variant="h3" component="h1" sx={{ fontWeight: '800', mb: 3, color: '#003399' }}>
             Get in Touch
           </Typography>
-          <Typography variant="body1" sx={{ color: '#6b7280', maxWidth: '760px', mx: 'auto' }}>
-            Have questions? We're here to help! Choose your preferred way to contact us and we'll get back to you as soon as possible.
+          <Typography variant="body1" sx={{ color: '#4b5563', lineHeight: 1.6 }}>
+            Your health and well-being are our top priorities. Whether you have a question about our services, need to schedule an appointment, or require billing assistance, our dedicated team is here to support you every step of the way.
           </Typography>
-        </Box>
-
-        <Grid container spacing={4} className="top-contact-cards" sx={{ mt: 4 }}>
-        {/* Contact Methods Cards */}
-          {contactInfo.map((info, idx) => (
-            <Grid item xs={12} sm={6} md={3} key={idx}>
-              <Card className="contact-card small" elevation={2} sx={{ height: '100%', textAlign: 'center' }}>
-                <CardContent>
-                  <Box sx={{ mb: 1 }} className="contact-card-icon">{info.icon}</Box>
-                  <Typography variant="h6" sx={{ mb: 1, fontWeight: '700' }}>
-                    {info.label}
-                  </Typography>
-                  <Typography variant="body2" sx={{ mb: 1, color: '#1a1a1a', fontWeight: 500 }}>
-                    {info.value}
-                  </Typography>
-                  <Chip
-                    label={info.available}
-                    size="small"
-                    className="contact-availability"
-                  />
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
+        </Container>
       </Box>
 
-      {/* Main Form Section */}
-      <Grid container spacing={4}>
-        {/* Form */}
-        <Grid item xs={12} md={7}>
-          <Paper elevation={3} className="contact-form-wrapper" sx={{ p: 4, borderRadius: '8px' }}>
-            <Typography variant="h5" sx={{ mb: 3, fontWeight: 'bold', color: '#1a1a1a' }}>
-              Send us a Message
-            </Typography>
+      {/* Main Form Section - Centered Container */}
+      <Container maxWidth="lg" sx={{ pb: 8, mt: -4 }}>
+        <Grid container spacing={4} sx={{ maxWidth: '1000px', mx: 'auto' }}>
+          {/* Form */}
+          <Grid item xs={12} md={7}>
+            <Paper elevation={0} sx={{ p: { xs: 3, md: 5 }, borderRadius: '12px', border: '1px solid #e5e7eb', backgroundColor: '#fff', height: '100%' }}>
+              <Typography variant="h5" sx={{ mb: 4, fontWeight: '700', color: '#1f2937' }}>
+                Send us a Message
+              </Typography>
 
-            {submitted && (
+              {submitted && (
               <Alert severity="success" icon={<CheckCircle />} sx={{ mb: 3 }}>
                 ✅ Thank you! Your message has been sent successfully. We'll respond within the estimated time.
               </Alert>
@@ -217,46 +203,49 @@ const Contact = () => {
 
             <form onSubmit={handleSubmit} className="message-form">
               <Stack spacing={2.5}>
-                {/* Name */}
-                <TextField
-                  fullWidth
-                  label="Full Name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  error={!!errors.name}
-                  helperText={errors.name}
-                  placeholder="Enter your full name"
-                  variant="outlined"
-                />
-
-                {/* Email and Phone */}
+                {/* Row 1: Name and Email */}
                 <Grid container spacing={2}>
                   <Grid item xs={12} sm={6}>
+                    <Typography variant="body2" sx={{ fontWeight: 600, color: '#08306b', mb: 0.5 }}>
+                      Full Name
+                    </Typography>
                     <TextField
                       fullWidth
-                      label="Email Address"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      error={!!errors.name}
+                      helperText={errors.name}
+                      placeholder="John Doe"
+                      variant="outlined"
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Typography variant="body2" sx={{ fontWeight: 600, color: '#08306b', mb: 0.5 }}>
+                      Email Address
+                    </Typography>
+                    <TextField
+                      fullWidth
                       name="email"
                       type="email"
                       value={formData.email}
                       onChange={handleChange}
                       error={!!errors.email}
                       helperText={errors.email}
-                      placeholder="your@email.com"
+                      placeholder="john@example.com"
                       variant="outlined"
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <Email sx={{ color: '#0ea5a9' }} />
-                          </InputAdornment>
-                        ),
-                      }}
                     />
                   </Grid>
+                </Grid>
+
+                {/* Row 2: Phone and Department */}
+                <Grid container spacing={2}>
                   <Grid item xs={12} sm={6}>
+                    <Typography variant="body2" sx={{ fontWeight: 600, color: '#08306b', mb: 0.5 }}>
+                      Phone Number
+                    </Typography>
                     <TextField
                       fullWidth
-                      label="Phone Number"
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
@@ -264,152 +253,77 @@ const Contact = () => {
                       helperText={errors.phone}
                       placeholder="+1 (555) 000-0000"
                       variant="outlined"
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <Phone sx={{ color: '#0ea5a9' }} />
-                          </InputAdornment>
-                        ),
-                      }}
                     />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Typography variant="body2" sx={{ fontWeight: 600, color: '#08306b', mb: 0.5 }}>
+                      Department
+                    </Typography>
+                    <FormControl fullWidth error={!!errors.department}>
+                      <Select
+                        name="department"
+                        value={formData.department || ''}
+                        onChange={handleChange}
+                        displayEmpty
+                      >
+                        <MenuItem value="" disabled>General Inquiry</MenuItem>
+                        {departments.map((dept) => (
+                          <MenuItem key={dept} value={dept}>
+                            {dept}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                      {errors.department && (
+                        <Typography variant="caption" sx={{ color: '#d32f2f', mt: 0.5 }}>
+                          {errors.department}
+                        </Typography>
+                      )}
+                    </FormControl>
                   </Grid>
                 </Grid>
 
-                {/* Department Selection */}
-                <FormControl fullWidth error={!!errors.department}>
-                  <InputLabel>Department / Category</InputLabel>
-                  <Select
-                    name="department"
-                    value={formData.department}
-                    onChange={handleChange}
-                    label="Department / Category"
-                  >
-                    {departments.map((dept) => (
-                      <MenuItem key={dept} value={dept}>
-                        {dept}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                  {errors.department && (
-                    <Typography variant="caption" sx={{ color: '#d32f2f', mt: 0.5 }}>
-                      {errors.department}
-                    </Typography>
-                  )}
-                </FormControl>
-
-                {/* Response Time Display */}
-                {formData.department && (
-                  <Paper sx={{ p: 2, backgroundColor: '#f5f5f5', borderRadius: '6px' }}>
-                    <Stack direction="row" spacing={1} alignItems="center">
-                      <AccessTime sx={{ color: '#0ea5a9', fontSize: '1.2rem' }} />
-                      <Typography variant="body2">
-                        <strong>Expected Response:</strong> {getResponseTime(formData.department)}
-                      </Typography>
-                    </Stack>
-                  </Paper>
-                )}
-
-                {/* Subject */}
-                <TextField
-                  fullWidth
-                  label="Subject"
-                  name="subject"
-                  value={formData.subject}
-                  onChange={handleChange}
-                  error={!!errors.subject}
-                  helperText={errors.subject}
-                  placeholder="Brief subject of your inquiry"
-                  variant="outlined"
-                />
-
-                {/* Contact Method Preference */}
-                <FormControl fullWidth>
-                  <InputLabel>Preferred Contact Method</InputLabel>
-                  <Select
-                    name="contactMethod"
-                    value={formData.contactMethod}
-                    onChange={handleChange}
-                    label="Preferred Contact Method"
-                  >
-                    {contactMethods.map((method) => (
-                      <MenuItem key={method.value} value={method.value}>
-                        {method.icon} {method.label}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-
-                {/* Priority Level */}
-                  <Box className="priority-level">
-                  <Typography variant="body2" sx={{ mb: 1, fontWeight: 'bold' }}>
-                    Priority Level
+                {/* Message */}
+                <Box>
+                  <Typography variant="body2" sx={{ fontWeight: 600, color: '#08306b', mb: 0.5 }}>
+                    Message
                   </Typography>
-                  <Stack direction="row" spacing={1}>
-                    {['low', 'medium', 'high', 'urgent'].map((level) => (
-                      <Button
-                        key={level}
-                        variant={formData.priority === level ? 'contained' : 'outlined'}
-                        size="small"
-                        onClick={() =>
-                          setFormData((prev) => ({ ...prev, priority: level }))
-                        }
-                        sx={{
-                          borderColor: getPriorityColor(level),
-                          color:
-                            formData.priority === level ? 'white' : getPriorityColor(level),
-                          backgroundColor:
-                            formData.priority === level ? getPriorityColor(level) : 'transparent',
-                          textTransform: 'capitalize',
-                          '&:hover': {
-                            backgroundColor:
-                              formData.priority === level ? getPriorityColor(level) : 'transparent',
-                          },
-                        }}
-                      >
-                        {level}
-                      </Button>
-                    ))}
-                  </Stack>
+                  <TextField
+                    fullWidth
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    error={!!errors.message}
+                    helperText={errors.message}
+                    placeholder="How can we help you today?"
+                    variant="outlined"
+                    multiline
+                    rows={4}
+                  />
                 </Box>
 
-                {/* Message */}
-                <TextField
-                  fullWidth
-                  label="Message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  error={!!errors.message}
-                  helperText={errors.message}
-                  placeholder="Describe your inquiry in detail..."
-                  variant="outlined"
-                  multiline
-                  rows={5}
-                  maxRows={8}
-                />
-
                 {/* Submit Button */}
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  className="send-button"
-                  sx={{
-                    backgroundColor: '#0ea5a9',
-                    color: 'white',
-                    padding: '12px',
-                    fontSize: '1rem',
-                    fontWeight: 'bold',
-                    '&:hover': {
-                      backgroundColor: '#0d8b8f',
-                    },
-                    borderRadius: '6px',
-                    mt: 2,
-                  }}
-                  startIcon={<Send />}
-                >
-                  Send Message
-                </Button>
+                <Box>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    className="send-button"
+                    sx={{
+                      backgroundColor: '#08306b',
+                      color: 'white',
+                      padding: '10px 24px',
+                      fontSize: '0.9rem',
+                      fontWeight: 'bold',
+                      textTransform: 'none',
+                      '&:hover': {
+                        backgroundColor: '#06204a',
+                      },
+                      borderRadius: '6px',
+                      mt: 2,
+                    }}
+                  >
+                    Send Message
+                  </Button>
+                </Box>
               </Stack>
             </form>
           </Paper>
@@ -417,98 +331,164 @@ const Contact = () => {
 
         {/* Quick Contact + Department Directory */}
         <Grid item xs={12} md={5}>
-          <Card className="contact-quick-card" elevation={6} sx={{ mb: 3, borderRadius: '12px', overflow: 'hidden' }}>
-            <CardContent>
-              <Typography variant="h6" sx={{ fontWeight: '700', color: '#fff' }}>
-                Quick Contact
-              </Typography>
-              <Typography variant="body2" sx={{ color: '#e0f2ff', mt: 1 }}>24/7 Helpline</Typography>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, height: '100%' }}>
+            <Card className="contact-quick-card" elevation={0} sx={{ borderRadius: '12px', overflow: 'hidden', backgroundColor: '#003399', color: '#fff', p: { xs: 2, md: 3 } }}>
+              <CardContent>
+                <Typography variant="h6" sx={{ fontWeight: '600', color: '#fff', mb: 3 }}>
+                  Quick Contact
+                </Typography>
 
-              <Stack spacing={2} sx={{ mt: 2 }}>
-                <Box>
-                  <Typography variant="caption" sx={{ color: '#cde7ff' }}>Phone</Typography>
-                  <Typography variant="h6" sx={{ fontWeight: 900, color: '#fff' }}>1-800-CARELINK</Typography>
-                </Box>
-
-                <Box>
-                  <Typography variant="caption" sx={{ color: '#cde7ff' }}>Email Support</Typography>
-                  <Typography variant="body2" sx={{ color: '#fff' }}>contact@carelink.health</Typography>
-                </Box>
-
-                <Box>
-                  <Typography variant="caption" sx={{ color: '#cde7ff' }}>Physical Address</Typography>
-                  <Typography variant="body2" sx={{ color: '#fff' }}>123 Healthcare Plaza, Medical District</Typography>
-                </Box>
-              </Stack>
-            </CardContent>
-          </Card>
-
-          <Card className="department-directory" elevation={1} sx={{ borderRadius: '12px', overflow: 'hidden' }}>
-            <CardContent>
-              <Typography variant="h6" sx={{ mb: 2, fontWeight: '700', color: '#08306b' }}>Department Directory</Typography>
-              <Stack spacing={1.5}>
-                {[
-                  { name: 'Emergency', ext: '911' },
-                  { name: 'Pharmacy', ext: 'Ext. 402' },
-                  { name: 'Laboratory', ext: 'Ext. 515' },
-                  { name: 'Billing Dept.', ext: 'Ext. 209' },
-                ].map((d) => (
-                  <Box key={d.name} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: '10px', borderRadius: '8px', background: '#fff' }}>
-                    <Typography variant="body2" sx={{ color: '#08306b' }}>{d.name}</Typography>
-                    <Typography variant="body2" sx={{ color: '#2563eb', fontWeight: 700 }}>{d.ext}</Typography>
+                <Stack spacing={3}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                    <Box sx={{ backgroundColor: 'rgba(255,255,255,0.1)', p: 1, borderRadius: '50%', display: 'flex' }}>
+                      <Phone sx={{ fontSize: '1.2rem' }} />
+                    </Box>
+                    <Box>
+                      <Typography variant="caption" sx={{ color: '#cde7ff' }}>24/7 Helpline</Typography>
+                      <Typography variant="body1" sx={{ fontWeight: 'bold' }}>1-800-CARE-LINK</Typography>
+                    </Box>
                   </Box>
-                ))}
-              </Stack>
-            </CardContent>
-          </Card>
+
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                    <Box sx={{ backgroundColor: 'rgba(255,255,255,0.1)', p: 1, borderRadius: '50%', display: 'flex' }}>
+                      <Email sx={{ fontSize: '1.2rem' }} />
+                    </Box>
+                    <Box>
+                      <Typography variant="caption" sx={{ color: '#cde7ff' }}>Email Support</Typography>
+                      <Typography variant="body2" sx={{ fontWeight: 500 }}>contact@carelink.health</Typography>
+                    </Box>
+                  </Box>
+
+                  <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+                    <Box sx={{ backgroundColor: 'rgba(255,255,255,0.1)', p: 1, borderRadius: '50%', display: 'flex' }}>
+                      <LocationOn sx={{ fontSize: '1.2rem' }} />
+                    </Box>
+                    <Box>
+                      <Typography variant="caption" sx={{ color: '#cde7ff' }}>Physical Address</Typography>
+                      <Typography variant="body2" sx={{ fontWeight: 500 }}>123 Healthcare Plaza,<br/>Medical District</Typography>
+                    </Box>
+                  </Box>
+                </Stack>
+              </CardContent>
+            </Card>
+
+            <Card className="department-directory" elevation={0} sx={{ borderRadius: '12px', overflow: 'hidden', backgroundColor: '#eef2ff', p: { xs: 2, md: 3 }, border: '1px solid #dbeafe', flexGrow: 1 }}>
+              <CardContent>
+                <Typography variant="h6" sx={{ mb: 3, fontWeight: '700', color: '#003399' }}>
+                  Department Directory
+                </Typography>
+                <Stack spacing={2} divider={<Box sx={{ height: '1px', backgroundColor: 'rgba(0,51,153,0.1)' }} />}>
+                  {[
+                    { name: 'Emergency', ext: '911', color: '#d32f2f' },
+                    { name: 'Pharmacy', ext: 'Ext. 402', color: '#003399' },
+                    { name: 'Laboratory', ext: 'Ext. 515', color: '#003399' },
+                    { name: 'Billing Dept.', ext: 'Ext. 209', color: '#003399' },
+                  ].map((d) => (
+                    <Box key={d.name} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', pt: 1, pb: 1 }}>
+                      <Typography variant="body2" sx={{ fontWeight: 600, color: '#374151' }}>{d.name}</Typography>
+                      <Typography variant="body2" sx={{ fontWeight: 'bold', color: d.color }}>{d.ext}</Typography>
+                    </Box>
+                  ))}
+                </Stack>
+              </CardContent>
+            </Card>
+          </Box>
         </Grid>
       </Grid>
-      {/* Locations Section */}
-      <Box className="locations-section" sx={{ mt: 8 }}>
-        <Typography variant="h5" sx={{ mb: 3, fontWeight: 'bold', textAlign: 'center' }}>
-          Our Locations
-        </Typography>
+      </Container>
+
+      {/* Locations Section - Full width background container */}
+      <Box className="locations-section" sx={{ 
+        width: '100vw', 
+        ml: 'calc(50% - 50vw)', 
+        backgroundColor: '#f4f7ff', 
+        py: { xs: 6, md: 10 } 
+      }}>
+        <Container maxWidth="lg">
+        <Box sx={{ textAlign: 'center', mb: 4 }}>
+          <Typography variant="h5" sx={{ fontWeight: 'bold', color: '#08306b', mb: 1 }}>
+            Our Locations
+          </Typography>
+          <Typography variant="body2" sx={{ color: '#6b7280' }}>
+            Find a CareLink facility near you
+          </Typography>
+        </Box>
 
         <Grid container spacing={3} alignItems="stretch">
-          <Grid item xs={12} md={7}>
-            <Card className="locations-feature" elevation={1}>
-              <Box className="locations-feature-media" />
-              <CardContent>
-                <Typography variant="h6" sx={{ fontWeight: 800 }}>Find a CareLink facility near you</Typography>
-                <Typography variant="body2" sx={{ color: '#6b7280', mt: 1 }}>Search our locations, services and directions.</Typography>
-              </CardContent>
+          <Grid item xs={12} md={6}>
+            <Card elevation={0} sx={{ height: '100%', borderRadius: '12px', overflow: 'hidden', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#e2e8f0', minHeight: '350px' }}>
+               {/* Map Placeholder image background could be inserted here. Using fallback style */}
+               <Box sx={{ position: 'absolute', inset: 0, opacity: 0.5, backgroundImage: 'url("https://www.transparenttextures.com/patterns/cubes.png")' }} />
+               <Button variant="contained" sx={{ bgcolor: 'white', color: '#08306b', zIndex: 1, borderRadius: '24px', fontWeight: 'bold', '&:hover': { bgcolor: '#f8fafc' } }} startIcon={<LocationOn sx={{ color: '#08306b' }} />}>
+                 Interactive Map (Placeholder)
+               </Button>
             </Card>
           </Grid>
 
-          <Grid item xs={12} md={5}>
+          <Grid item xs={12} md={6}>
             <Stack spacing={2}>
-              {[{
-                title: 'CareLink Main Campus',
-                addr: '123 Healthcare Plaza, Medical City, NY 10001'
-              },{
-                title: 'CareLink Westside Clinic',
-                addr: '45 West Health Dr, Suite 200'
-              },{
-                title: 'CareLink Pediatric Center',
-                addr: '88 Kids Care Rd, Medical City'
-              }].map((loc) => (
-                <Card key={loc.title} className="location-list-card" elevation={1}>
-                  <CardContent>
-                    <Stack direction="row" justifyContent="space-between" alignItems="center">
-                      <Box>
-                        <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>{loc.title}</Typography>
-                        <Typography variant="body2" sx={{ color: '#6b7280' }}>{loc.addr}</Typography>
+              {[
+                { title: 'CareLink Main Campus', addr: '123 Healthcare Plaza, Medical District, NY 10001', tag: 'Open 24/7', tagBg: '#a7f3d0', tagColor: '#065f46' },
+                { title: 'CareLink Westside Clinic', addr: '456 West River Dr. Riverside, NY 10023', tag: '8AM - 8PM', tagBg: '#f1f5f9', tagColor: '#475569' },
+                { title: 'CareLink Pediatric Center', addr: '88 Kids Care Rd, Medical City, NY 10045', tag: '9AM - 5PM', tagBg: '#f1f5f9', tagColor: '#475569' }
+              ].map((loc) => (
+                <Card key={loc.title} elevation={0} sx={{ borderRadius: '12px', border: '1px solid #e2e8f0' }}>
+                  <CardContent sx={{ p: '24px !important' }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1 }}>
+                      <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#1a1a1a' }}>{loc.title}</Typography>
+                      <Chip label={loc.tag} size="small" sx={{ backgroundColor: loc.tagBg, color: loc.tagColor, fontWeight: 700, fontSize: '0.7rem', height: '22px' }} />
+                    </Box>
+                    <Typography variant="body2" sx={{ color: '#6b7280', mb: 2 }}>{loc.addr}</Typography>
+                    
+                    <Box sx={{ display: 'flex', gap: 3 }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', color: '#08306b' }}>
+                        <DirectionsCarOutlined sx={{ fontSize: '1.2rem', mr: 0.5 }} />
+                        <Typography variant="caption" sx={{ fontWeight: 600 }}>Get Directions</Typography>
                       </Box>
-                      <Button size="small" variant="outlined">View</Button>
-                    </Stack>
+                      <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', color: '#08306b' }}>
+                        <AccessTime sx={{ fontSize: '1.2rem', mr: 0.5 }} />
+                        <Typography variant="caption" sx={{ fontWeight: 600 }}>View Hours</Typography>
+                      </Box>
+                    </Box>
                   </CardContent>
                 </Card>
               ))}
             </Stack>
           </Grid>
         </Grid>
+        </Container>
       </Box>
-    </Container>
+
+    {/* Bottom Emergency Banner */}
+    <Box sx={{ 
+      backgroundColor: '#003399', 
+      color: 'white', 
+      py: 4, 
+      width: '100vw',
+      ml: 'calc(50% - 50vw)',
+    }}>
+      <Container maxWidth="lg">
+        <Grid container alignItems="center" justifyContent="space-between" spacing={3}>
+          <Grid item xs={12} md={7}>
+            <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 0.5 }}>
+              Need immediate medical attention?
+            </Typography>
+            <Typography variant="body2" sx={{ color: '#e0f2ff' }}>
+              Our emergency rooms are staffed with specialists 24/7.
+            </Typography>
+          </Grid>
+          <Grid item xs={12} md={5} sx={{ display: 'flex', justifyContent: { xs: 'flex-start', md: 'flex-end' }, gap: 2 }}>
+            <Button variant="contained" sx={{ backgroundColor: 'white', color: '#003399', fontWeight: 'bold', px: 3, '&:hover': { backgroundColor: '#f0f4ff' } }}>
+              Find Nearest ER
+            </Button>
+            <Button variant="outlined" sx={{ borderColor: 'rgba(255,255,255,0.5)', color: 'white', fontWeight: 'bold', px: 3, '&:hover': { borderColor: 'white', backgroundColor: 'rgba(255,255,255,0.1)' } }}>
+              Call Dispatch
+            </Button>
+          </Grid>
+        </Grid>
+      </Container>
+    </Box>
+  </Box>
   );
 };
 
