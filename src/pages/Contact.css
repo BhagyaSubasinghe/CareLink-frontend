@@ -73,16 +73,46 @@
   }
 }
 
-.contact-form-wrapper .MuiTextField-root {
+.contact-form-wrapper .MuiFormControl-root {
+  width: 100%;
   transition: all 0.3s ease;
 }
 
-.contact-form-wrapper .MuiTextField-root:hover .MuiOutlinedInput-root {
+/* Ensure hover/border styles target the correct MUI element structure */
+.contact-form-wrapper .MuiFormControl-root:hover .MuiOutlinedInput-notchedOutline,
+.contact-form-wrapper .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
   border-color: #0ea5a9;
 }
 
 .contact-form-wrapper .MuiOutlinedInput-root {
   border-radius: 6px;
+}
+
+/* Removed custom input padding so Material-UI label aligns properly */
+
+/* Form spacing fixes */
+.contact-form-wrapper .message-form .MuiTextField-root,
+.contact-form-wrapper .message-form .MuiFormControl-root {
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.contact-form-wrapper .priority-level .MuiButton-root {
+  text-transform: capitalize;
+  border-radius: 6px;
+  min-width: 72px;
+}
+
+.contact-form-wrapper .send-button {
+  background-color: #0ea5a9 !important;
+  color: #fff !important;
+  padding: 12px 14px !important;
+  font-weight: 700 !important;
+  border-radius: 8px !important;
+}
+
+.contact-form-wrapper .MuiFormHelperText-root {
+  font-size: 0.8rem;
 }
 
 .contact-form-wrapper .MuiOutlinedInput-root.Mui-focused {
@@ -132,6 +162,115 @@
 .contact-form-wrapper .MuiPaper-root {
   border-radius: 8px;
   transition: all 0.3s ease;
+}
+
+/* Hero / header panel */
+.contact-hero-panel {
+  background: linear-gradient(180deg,#f3fbfc,#ffffff);
+  padding: 28px 18px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 6px 20px rgba(14,165,169,0.06);
+}
+
+.contact-hero-panel h3, .contact-hero-panel .MuiTypography-h3 {
+  color: #0ea5a9;
+  font-weight: 800;
+}
+
+/* Top contact cards row */
+.top-contact-cards { margin-top: 18px; }
+.top-contact-cards .contact-card.small { padding: 12px 8px; }
+.top-contact-cards .contact-card.small .MuiCardContent-root { padding: 18px; }
+.top-contact-cards .contact-card.small { height: 150px; display:flex; align-items:center; }
+.top-contact-cards .contact-card-icon { font-size: 36px; color: #0ea5a9; display:block; margin: 0 auto 6px; }
+.top-contact-cards .contact-availability {
+  background: #e6f9f9; color: #0b8b86; border-radius: 16px; padding: 4px 8px; font-size: 0.75rem; margin-top: 6px;
+}
+
+/* Quick contact gradient card */
+.contact-quick-card {
+  background: linear-gradient(180deg,#0b5ed7,#08306b);
+  color: #fff;
+  padding: 18px;
+  border-radius: 12px;
+}
+.contact-quick-card .MuiTypography-h6 { color: #fff; }
+.contact-quick-card .MuiButton-root { border-color: rgba(255,255,255,0.2); color: #fff; }
+
+/* Department directory */
+.department-directory { background: #eef8ff; padding: 16px; }
+
+/* Locations */
+.locations-section { margin-top: 48px; }
+.locations-feature { border-radius: 12px; overflow: hidden; }
+.locations-feature-media { height: 220px; background: linear-gradient(90deg,#eef2ff,#e6f6ff); }
+.location-list-card { border-radius: 10px; }
+
+/* Emergency callout */
+.contact-emergency { background: linear-gradient(90deg,#08306b,#0b5ed7); color:#fff; padding:18px; border-radius:8px; margin-top:28px; text-align:center; }
+
+/* Sticky right column on larger screens */
+@media (min-width: 960px) {
+  .contact-quick-card { position: sticky; top: 100px; }
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .top-contact-cards .contact-card.small { height: auto; }
+  .locations-feature-media { height: 140px; }
+}
+
+/* Layout and right column styling to match provided mock */
+.contact-form-wrapper {
+  background: #fff;
+  padding: 28px;
+}
+
+.contact-quick-card {
+  background: linear-gradient(180deg,#0b5ed7,#08306b);
+  color: #fff;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.department-directory {
+  background: #eef6ff;
+  padding: 16px;
+  border-radius: 12px;
+}
+
+.locations-section {
+  margin-top: 48px;
+}
+
+.location-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-radius: 12px;
+}
+
+.location-media {
+  height: 120px;
+  background: linear-gradient(90deg,#eef2ff,#e6f6ff);
+  border-radius: 12px 12px 0 0;
+}
+
+/* Callout / blue bar at bottom for emergency */
+.contact-emergency {
+  background: linear-gradient(90deg,#08306b,#0b5ed7);
+  color: #fff;
+  padding: 18px 20px;
+  border-radius: 8px;
+  margin-top: 28px;
+  text-align: center;
+}
+
+/* Make form narrower on wide screens similar to mock */
+@media (min-width: 1000px) {
+  .contact-form-wrapper { padding: 36px; }
+  .contact-container .MuiGrid-root > .MuiGrid-item:first-child { max-width: 680px; }
 }
 
 /* Support Cards */

@@ -165,38 +165,40 @@ const Contact = () => {
   return (
     <Container maxWidth="lg" className="contact-container">
       {/* Header */}
-      <Box className="contact-header" sx={{ mb: 6, textAlign: 'center' }}>
-        <Typography variant="h3" component="h1" sx={{ fontWeight: 'bold', mb: 2, color: '#1a1a1a' }}>
-          Get in Touch
-        </Typography>
-        <Typography variant="body1" sx={{ color: '#666', maxWidth: '600px', mx: 'auto' }}>
-          Have questions? We're here to help! Choose your preferred way to contact us and we'll get back to you as soon as possible.
-        </Typography>
-      </Box>
+      <Box className="contact-hero" sx={{ mb: 4 }}>
+        <Box className="contact-hero-panel">
+          <Typography variant="h3" component="h1" sx={{ fontWeight: 'bold', mb: 1, color: '#0ea5a9' }}>
+            Get in Touch
+          </Typography>
+          <Typography variant="body1" sx={{ color: '#6b7280', maxWidth: '760px', mx: 'auto' }}>
+            Have questions? We're here to help! Choose your preferred way to contact us and we'll get back to you as soon as possible.
+          </Typography>
+        </Box>
 
-      <Grid container spacing={4} sx={{ mb: 6 }}>
+        <Grid container spacing={4} className="top-contact-cards" sx={{ mt: 4 }}>
         {/* Contact Methods Cards */}
-        {contactInfo.map((info, idx) => (
-          <Grid item xs={12} sm={6} md={3} key={idx}>
-            <Card className="contact-card" elevation={2} sx={{ height: '100%', textAlign: 'center' }}>
-              <CardContent>
-                <Box sx={{ mb: 2 }}>{info.icon}</Box>
-                <Typography variant="h6" sx={{ mb: 1, fontWeight: 'bold' }}>
-                  {info.label}
-                </Typography>
-                <Typography variant="body2" sx={{ mb: 1, color: '#1a1a1a', fontWeight: '500' }}>
-                  {info.value}
-                </Typography>
-                <Chip
-                  label={info.available}
-                  size="small"
-                  sx={{ backgroundColor: '#e0f7fa', color: '#0ea5a9' }}
-                />
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+          {contactInfo.map((info, idx) => (
+            <Grid item xs={12} sm={6} md={3} key={idx}>
+              <Card className="contact-card small" elevation={2} sx={{ height: '100%', textAlign: 'center' }}>
+                <CardContent>
+                  <Box sx={{ mb: 1 }} className="contact-card-icon">{info.icon}</Box>
+                  <Typography variant="h6" sx={{ mb: 1, fontWeight: '700' }}>
+                    {info.label}
+                  </Typography>
+                  <Typography variant="body2" sx={{ mb: 1, color: '#1a1a1a', fontWeight: 500 }}>
+                    {info.value}
+                  </Typography>
+                  <Chip
+                    label={info.available}
+                    size="small"
+                    className="contact-availability"
+                  />
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
 
       {/* Main Form Section */}
       <Grid container spacing={4}>
@@ -213,7 +215,7 @@ const Contact = () => {
               </Alert>
             )}
 
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="message-form">
               <Stack spacing={2.5}>
                 {/* Name */}
                 <TextField
@@ -338,7 +340,7 @@ const Contact = () => {
                 </FormControl>
 
                 {/* Priority Level */}
-                <Box>
+                  <Box className="priority-level">
                   <Typography variant="body2" sx={{ mb: 1, fontWeight: 'bold' }}>
                     Priority Level
                   </Typography>
@@ -391,6 +393,7 @@ const Contact = () => {
                   type="submit"
                   fullWidth
                   variant="contained"
+                  className="send-button"
                   sx={{
                     backgroundColor: '#0ea5a9',
                     color: 'white',
@@ -414,20 +417,17 @@ const Contact = () => {
 
         {/* Quick Contact + Department Directory */}
         <Grid item xs={12} md={5}>
-          <Card elevation={3} sx={{ mb: 3, borderRadius: '12px', overflow: 'hidden' }}>
-            <Box sx={{ background: 'linear-gradient(180deg,#08306b,#0b5ed7)', color: '#fff', p: 3 }}>
-              <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+          <Card className="contact-quick-card" elevation={6} sx={{ mb: 3, borderRadius: '12px', overflow: 'hidden' }}>
+            <CardContent>
+              <Typography variant="h6" sx={{ fontWeight: '700', color: '#fff' }}>
                 Quick Contact
               </Typography>
-              <Typography variant="body2" sx={{ opacity: 0.9, mt: 1 }}>
-                24/7 Helpline
-              </Typography>
-            </Box>
-            <CardContent sx={{ background: '#0b5ed7', color: '#fff' }}>
-              <Stack spacing={2}>
+              <Typography variant="body2" sx={{ color: '#e0f2ff', mt: 1 }}>24/7 Helpline</Typography>
+
+              <Stack spacing={2} sx={{ mt: 2 }}>
                 <Box>
                   <Typography variant="caption" sx={{ color: '#cde7ff' }}>Phone</Typography>
-                  <Typography variant="h6" sx={{ fontWeight: '900', color: '#fff' }}>1-800-CARELINK</Typography>
+                  <Typography variant="h6" sx={{ fontWeight: 900, color: '#fff' }}>1-800-CARELINK</Typography>
                 </Box>
 
                 <Box>
@@ -443,9 +443,9 @@ const Contact = () => {
             </CardContent>
           </Card>
 
-          <Card elevation={1} sx={{ borderRadius: '12px', overflow: 'hidden' }}>
-            <CardContent sx={{ background: '#eef8ff' }}>
-              <Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold', color: '#08306b' }}>Department Directory</Typography>
+          <Card className="department-directory" elevation={1} sx={{ borderRadius: '12px', overflow: 'hidden' }}>
+            <CardContent>
+              <Typography variant="h6" sx={{ mb: 2, fontWeight: '700', color: '#08306b' }}>Department Directory</Typography>
               <Stack spacing={1.5}>
                 {[
                   { name: 'Emergency', ext: '911' },
@@ -453,7 +453,7 @@ const Contact = () => {
                   { name: 'Laboratory', ext: 'Ext. 515' },
                   { name: 'Billing Dept.', ext: 'Ext. 209' },
                 ].map((d) => (
-                  <Box key={d.name} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: '8px 10px', borderRadius: '8px', background: '#fff' }}>
+                  <Box key={d.name} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: '10px', borderRadius: '8px', background: '#fff' }}>
                     <Typography variant="body2" sx={{ color: '#08306b' }}>{d.name}</Typography>
                     <Typography variant="body2" sx={{ color: '#2563eb', fontWeight: 700 }}>{d.ext}</Typography>
                   </Box>
@@ -463,6 +463,51 @@ const Contact = () => {
           </Card>
         </Grid>
       </Grid>
+      {/* Locations Section */}
+      <Box className="locations-section" sx={{ mt: 8 }}>
+        <Typography variant="h5" sx={{ mb: 3, fontWeight: 'bold', textAlign: 'center' }}>
+          Our Locations
+        </Typography>
+
+        <Grid container spacing={3} alignItems="stretch">
+          <Grid item xs={12} md={7}>
+            <Card className="locations-feature" elevation={1}>
+              <Box className="locations-feature-media" />
+              <CardContent>
+                <Typography variant="h6" sx={{ fontWeight: 800 }}>Find a CareLink facility near you</Typography>
+                <Typography variant="body2" sx={{ color: '#6b7280', mt: 1 }}>Search our locations, services and directions.</Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+
+          <Grid item xs={12} md={5}>
+            <Stack spacing={2}>
+              {[{
+                title: 'CareLink Main Campus',
+                addr: '123 Healthcare Plaza, Medical City, NY 10001'
+              },{
+                title: 'CareLink Westside Clinic',
+                addr: '45 West Health Dr, Suite 200'
+              },{
+                title: 'CareLink Pediatric Center',
+                addr: '88 Kids Care Rd, Medical City'
+              }].map((loc) => (
+                <Card key={loc.title} className="location-list-card" elevation={1}>
+                  <CardContent>
+                    <Stack direction="row" justifyContent="space-between" alignItems="center">
+                      <Box>
+                        <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>{loc.title}</Typography>
+                        <Typography variant="body2" sx={{ color: '#6b7280' }}>{loc.addr}</Typography>
+                      </Box>
+                      <Button size="small" variant="outlined">View</Button>
+                    </Stack>
+                  </CardContent>
+                </Card>
+              ))}
+            </Stack>
+          </Grid>
+        </Grid>
+      </Box>
     </Container>
   );
 };

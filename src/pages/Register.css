@@ -89,7 +89,7 @@
   transition: all 0.3s ease;
 }
 
-.register-form .MuiOutlinedInput-root:hover {
+.register-form .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
   border-color: #0ea5a9;
 }
 

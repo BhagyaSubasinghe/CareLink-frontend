@@ -97,7 +97,12 @@ code {
 .nav-auth-btn:hover { filter: brightness(.95) }
 
 /* Basic form/input visuals to match previous Tailwind appearance */
-input[type="text"], select, input[type="date"] { width:100%; border:1px solid #d1d5db; padding:.5rem .75rem; border-radius:.5rem; box-sizing:border-box }
+input[type="text"]:not(.MuiInputBase-input), select:not(.MuiInputBase-input), input[type="date"]:not(.MuiInputBase-input) { width:100%; border:1px solid #d1d5db; padding:.5rem .75rem; border-radius:.5rem; box-sizing:border-box }
+
+/* Override global border on MUI inputs just in case */
+.MuiInputBase-input {
+  border: none !important;
+}
 
 /* Make sure small inline icons keep reasonable size */
 .text-lg { font-size: 1.125rem }

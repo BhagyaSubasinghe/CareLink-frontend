@@ -89,7 +89,7 @@
   transition: all 0.3s ease;
 }
 
-.login-form .MuiOutlinedInput-root:hover {
+.login-form .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
   border-color: #0ea5a9;
 }
 
