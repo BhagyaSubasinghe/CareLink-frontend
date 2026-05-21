@@ -33,6 +33,7 @@ import {
 import MedicineCard from '../components/MedicineCard';
 import ReceiptUploader from '../components/ReceiptUploader';
 import PharmacyLocator from '../components/PharmacyLocator';
+import Footer from '../components/Footer';
 import './Pharmacy.css';
 
 const mockMedicines = [
@@ -207,6 +208,7 @@ function Pharmacy() {
   const cartTotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   return (
+    <>
     <Container className="pharmacy-root">
       {/* Header Section */}
       <Box className="pharmacy-header">
@@ -504,6 +506,8 @@ function Pharmacy() {
         )}
       </Dialog>
     </Container>
+    <Footer />
+    </>
   );
 }
 

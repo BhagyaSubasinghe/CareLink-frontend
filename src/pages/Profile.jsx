@@ -1,4 +1,5 @@
 import React from 'react';
+import Footer from '../components/Footer';
 
 export default function Profile() {
   return (
@@ -20,6 +21,7 @@ export default function Profile() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

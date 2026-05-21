@@ -7,6 +7,7 @@ import doctor2 from '../assest/aboutus/doctor2.jpg';
 import doctor3 from '../assest/aboutus/doctor3.jpg';
 import doctor4 from '../assest/aboutus/doctor4.jpg';
 import { useNavigate } from 'react-router-dom';
+import Footer from '../components/Footer';
 
 export default function About() {
   const navigate = useNavigate();
@@ -182,7 +183,7 @@ export default function About() {
         </section>
       
 
-      
+      <Footer />
     </div>
   );
 }

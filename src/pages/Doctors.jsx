@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Doctors.css';
+import Footer from '../components/Footer';
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
@@ -251,6 +252,7 @@ export default function Doctors() {
           </div>
         </main>
       </div>
+      <Footer />
     </div>
   );
 }

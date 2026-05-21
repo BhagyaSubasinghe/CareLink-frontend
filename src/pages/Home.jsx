@@ -6,6 +6,7 @@ import facility1 from '../assest/home/image1.jpg';
 import facility2 from '../assest/home/image2.jpg';
 import facility3 from '../assest/home/image3.jpg';
 import { useNavigate } from 'react-router-dom';
+import Footer from '../components/Footer';
 
 export default function Home() {
   const navigate = useNavigate();
@@ -193,8 +194,8 @@ export default function Home() {
           </div>
         </div>
 
-        
       </div>
+      <Footer />
     </div>
   );
 }

@@ -29,6 +29,7 @@ import {
   Send,
   DirectionsCarOutlined
 } from '@mui/icons-material';
+import Footer from '../components/Footer';
 import './Contact.css';
 
 const Contact = () => {
@@ -164,6 +165,7 @@ const Contact = () => {
   };
 
   return (
+    <>
     <Box sx={{ backgroundColor: '#ffffff', minHeight: '100vh' }}>
       
       {/* Hero Section - Full Width */}
@@ -488,7 +490,9 @@ const Contact = () => {
         </Grid>
       </Container>
     </Box>
-  </Box>
+    </Box>
+    <Footer />
+    </>
   );
 };
 

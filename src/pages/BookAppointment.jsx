@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Footer from '../components/Footer';
 
 export default function BookAppointment() {
   const [date, setDate] = useState('');
@@ -30,6 +31,7 @@ export default function BookAppointment() {
           <button className="bg-blue-600 text-white px-4 py-2 rounded">Confirm</button>
         </div>
       </form>
+      <Footer />
     </div>
   );
 }

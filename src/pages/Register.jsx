@@ -30,6 +30,7 @@ import {
   Close,
 } from '@mui/icons-material';
 import ForgotPasswordDialog from '../components/ForgotPasswordDialog';
+import Footer from '../components/Footer';
 import './Register.css';
 
 const PASSWORD_REQUIREMENTS = {
@@ -538,6 +539,7 @@ export default function Register() {
         open={forgotPasswordOpen}
         onClose={() => setForgotPasswordOpen(false)}
       />
+      <Footer />
     </Container>
   );
 }
