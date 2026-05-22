@@ -50,9 +50,6 @@ html, body { overflow-x: hidden; }
 .feature-title{font-weight:700}
 .feature-desc{color:var(--muted)}
 
-/* CTA band */
-.cta-band{border-radius:18px;padding:36px;text-align:center;margin-top:28px}
-
 /* Detail section */
 .detail-section{padding:48px 0}
 .detail-title{text-align:center;font-size:22px;color:#0b5ed7;font-weight:800;margin-bottom:6px}

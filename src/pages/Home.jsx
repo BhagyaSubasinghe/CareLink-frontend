@@ -6,7 +6,6 @@ import facility1 from '../assest/home/image1.jpg';
 import facility2 from '../assest/home/image2.jpg';
 import facility3 from '../assest/home/image3.jpg';
 import { useNavigate } from 'react-router-dom';
-import Footer from '../components/Footer';
 
 export default function Home() {
   const navigate = useNavigate();
@@ -184,18 +183,7 @@ export default function Home() {
             <div className="metric"><div className="metric-number">24h</div><div className="metric-label">Emergency Response</div></div>
           </div>
         </section>
-
-        <div className="cta-band" style={{marginTop:28,background:'linear-gradient(90deg,#0ea5a9,#3b82f6)',color:'#fff'}}>
-          <h2 style={{fontSize:28,fontWeight:800}}>Ready to Take Control of Your Health?</h2>
-          <p style={{marginTop:8,opacity:0.95}}>Join thousands of patients who trust CareLink for their healthcare needs.</p>
-          <div style={{marginTop:16,display:'flex',gap:12,justifyContent:'center'}}>
-            <button onClick={() => navigate('/doctors')} style={{background:'#fff',color:'#0ea5a9',padding:'10px 18px',borderRadius:10,fontWeight:700}}>Find a Doctor</button>
-            <button style={{background:'transparent',border:'2px solid #fff',color:'#fff',padding:'10px 18px',borderRadius:10,fontWeight:700}}>Learn More</button>
-          </div>
-        </div>
-
       </div>
-      <Footer />
     </div>
   );
 }

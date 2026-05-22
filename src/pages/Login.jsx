@@ -24,7 +24,6 @@ import {
   Lock,
 } from '@mui/icons-material';
 import ForgotPasswordDialog from '../components/ForgotPasswordDialog';
-import Footer from '../components/Footer';
 import './Login.css';
 
 export default function Login() {
@@ -271,7 +270,6 @@ export default function Login() {
         open={forgotPasswordOpen}
         onClose={() => setForgotPasswordOpen(false)}
       />
-      <Footer />
     </Container>
   );
 }

@@ -29,7 +29,6 @@ import {
   Send,
   DirectionsCarOutlined
 } from '@mui/icons-material';
-import Footer from '../components/Footer';
 import './Contact.css';
 
 const Contact = () => {
@@ -491,7 +490,6 @@ const Contact = () => {
       </Container>
     </Box>
     </Box>
-    <Footer />
     </>
   );
 };

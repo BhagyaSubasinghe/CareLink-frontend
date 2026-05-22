@@ -33,7 +33,6 @@ import {
 import MedicineCard from '../components/MedicineCard';
 import ReceiptUploader from '../components/ReceiptUploader';
 import PharmacyLocator from '../components/PharmacyLocator';
-import Footer from '../components/Footer';
 import './Pharmacy.css';
 
 const mockMedicines = [
@@ -519,7 +518,6 @@ function Pharmacy() {
         )}
       </Dialog>
     </Container>
-    <Footer />
     </>
   );
 }
