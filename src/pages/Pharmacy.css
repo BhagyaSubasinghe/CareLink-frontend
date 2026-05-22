@@ -6,41 +6,106 @@
   margin: 0 auto;
 }
 
-/* Header Section */
-.pharmacy-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 24px;
-  margin-bottom: 32px;
-  padding-bottom: 24px;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-.header-content {
-  flex: 1;
-}
-
-.header-title {
-  font-weight: 700;
-  font-size: 2.5rem;
-  line-height: 1.2;
-  margin-bottom: 8px;
-  display: flex;
+/* Hero Section */
+.pharmacy-hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
   align-items: center;
+  margin-bottom: 48px;
+  padding: 40px;
+  background: linear-gradient(135deg, #f0fdfc 0%, #ffffff 100%);
+  border-radius: 16px;
+  border: 1px solid #d1faf8;
+}
+
+.hero-content {
+  padding: 20px 0;
+}
+
+.hero-title {
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 1.3;
+  margin-bottom: 16px;
   color: #111827;
 }
 
-.header-subtitle {
+.hero-description {
   color: #6b7280;
-  font-size: 1.1rem;
+  font-size: 1rem;
   line-height: 1.6;
+  margin-bottom: 12px;
 }
 
-.header-actions {
+/* Upload Prescription Box */
+.upload-prescription-box {
   display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  background: white;
+  border-radius: 12px;
+  border: 2px dashed #0ea5a9;
+  text-align: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(14, 165, 169, 0.08);
+}
+
+.upload-prescription-box:hover {
+  border-color: #0d9097;
+  box-shadow: 0 8px 24px rgba(14, 165, 169, 0.15);
+  transform: translateY(-2px);
+}
+
+.upload-icon {
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80px;
+  height: 80px;
+  background: #f0fdfc;
+  border-radius: 12px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.upload-title {
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 8px;
+}
+
+.upload-description {
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+
+.upload-button {
+  min-width: 180px;
+  padding: 10px 32px !important;
+  text-transform: none;
+  font-weight: 500;
+  border-radius: 8px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .pharmacy-hero {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 24px;
+  }
+
+  .hero-title {
+    font-size: 1.5rem;
+  }
+
+  .upload-prescription-box {
+    padding: 32px 20px;
+  }
 }
 
 /* Tabs Styling */

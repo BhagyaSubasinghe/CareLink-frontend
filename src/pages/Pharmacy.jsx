@@ -210,28 +210,41 @@ function Pharmacy() {
   return (
     <>
     <Container className="pharmacy-root">
-      {/* Header Section */}
-      <Box className="pharmacy-header">
-        <Box className="header-content">
-          <Typography variant="h3" className="header-title">
-            <LocalPharmacy sx={{ mr: 2, fontSize: '2.5rem' }} />
-            CareLink Pharmacy
+      {/* Hero Section */}
+      <Box className="pharmacy-hero">
+        <Box className="hero-content">
+          <Typography variant="h4" className="hero-title">
+            Your Neighborhood Clinical Pharmacy
           </Typography>
-          <Typography variant="subtitle1" className="header-subtitle">
-            Find medicines, check availability, and compare prices — all in one place.
+          <Typography variant="body1" className="hero-description">
+            Accurate dispensing, verified availability, and hassle-free delivery. Simply upload your prescription for a quick check.
           </Typography>
         </Box>
-        <Box className="header-actions">
+
+        {/* Upload Prescription Section */}
+        <Box className="upload-prescription-box">
+          <Box className="upload-icon">
+            <CloudUpload sx={{ fontSize: '3rem', color: '#0ea5a9' }} />
+          </Box>
+          <Typography variant="h6" className="upload-title">
+            Upload Prescription
+          </Typography>
+          <Typography variant="body2" className="upload-description">
+            Drag and drop your medical prescription here or click to browse.
+          </Typography>
           <Button
             variant="contained"
-            startIcon={<TrendingUp />}
-            sx={{ mr: 1 }}
-            onClick={() => setTabValue(3)}
+            className="upload-button"
+            onClick={() => setTabValue(1)}
+            sx={{
+              mt: 2,
+              backgroundColor: '#0ea5a9',
+              '&:hover': {
+                backgroundColor: '#0d9097',
+              },
+            }}
           >
-            Top Rated
-          </Button>
-          <Button variant="outlined" startIcon={<LocationOn />} onClick={() => setTabValue(4)}>
-            Find Pharmacies
+            Select Document
           </Button>
         </Box>
       </Box>
