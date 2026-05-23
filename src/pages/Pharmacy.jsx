@@ -49,6 +49,7 @@ const mockMedicines = [
     uses: 'Pain relief, fever reduction',
     sideEffects: 'Upset stomach, bleeding',
     requiresPrescription: false,
+    image: 'paracitamol.jpg',
   },
   {
     id: 2,
@@ -63,6 +64,7 @@ const mockMedicines = [
     uses: 'Bacterial infection treatment',
     sideEffects: 'Allergic reactions, diarrhea',
     requiresPrescription: true,
+    image: 'citrazine.jpg',
   },
   {
     id: 3,
@@ -77,6 +79,7 @@ const mockMedicines = [
     uses: 'Fever, headache, body pain',
     sideEffects: 'Rare liver complications',
     requiresPrescription: false,
+    image: 'digital thermometer.jpg',
   },
   {
     id: 4,
@@ -91,6 +94,7 @@ const mockMedicines = [
     uses: 'Diabetes management',
     sideEffects: 'Gastrointestinal issues',
     requiresPrescription: true,
+    image: 'nutrition.jpg',
   },
   {
     id: 5,
@@ -105,6 +109,7 @@ const mockMedicines = [
     uses: 'Cholesterol management',
     sideEffects: 'Muscle pain, liver issues',
     requiresPrescription: true,
+    image: 'monitoring.jpg',
   },
   {
     id: 6,
@@ -119,6 +124,7 @@ const mockMedicines = [
     uses: 'Acid reflux, GERD',
     sideEffects: 'Headache, nausea',
     requiresPrescription: false,
+    image: 'personal care.jpg',
   },
 ];
 
@@ -219,33 +225,146 @@ function Pharmacy() {
             Accurate dispensing, verified availability, and hassle-free delivery. Simply upload your prescription for a quick check.
           </Typography>
         </Box>
+      </Box>
 
-        {/* Upload Prescription Section */}
-        <Box className="upload-prescription-box">
-          <Box className="upload-icon">
-            <CloudUpload sx={{ fontSize: '3rem', color: '#0ea5a9' }} />
+      {/* Browse Categories Section */}
+      <Box className="browse-categories-section" sx={{ mt: 5, mb: 5 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+          <Box>
+            <Typography variant="h5" sx={{ fontWeight: 700, mb: 0.5 }}>
+              Browse Categories
+            </Typography>
+            <Typography variant="body2" color="textSecondary">
+              Surgically-selected healthcare essentials.
+            </Typography>
           </Box>
-          <Typography variant="h6" className="upload-title">
-            Upload Prescription
-          </Typography>
-          <Typography variant="body2" className="upload-description">
-            Drag and drop your medical prescription here or click to browse.
-          </Typography>
-          <Button
-            variant="contained"
-            className="upload-button"
-            onClick={() => setTabValue(1)}
-            sx={{
-              mt: 2,
-              backgroundColor: '#0ea5a9',
-              '&:hover': {
-                backgroundColor: '#0d9097',
-              },
-            }}
-          >
-            Select Document
+          <Button variant="text" sx={{ color: '#0ea5a9', fontWeight: 600 }}>
+            View All Catalog →
           </Button>
         </Box>
+        <Grid container spacing={2}>
+          {[
+            { name: 'OTC Medicine', image: 'OTC medicine.jpg' },
+            { name: 'Personal Care', image: 'personal care.jpg' },
+            { name: 'Monitoring', image: 'monitoring.jpg' },
+            { name: 'Nutrition', image: 'nutrition.jpg' },
+          ].map((category, index) => (
+            <Grid item xs={12} sm={6} md={3} key={index}>
+              <Card
+                sx={{
+                  cursor: 'pointer',
+                  height: '200px',
+                  backgroundImage: `url('${require(`../assest/pharmacy/${category.image}`)}')`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  borderRadius: 2,
+                  display: 'flex',
+                  alignItems: 'flex-end',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  '&:hover': {
+                    transform: 'scale(1.05)',
+                    transition: 'transform 0.3s ease',
+                  },
+                  '&::before': {
+                    content: '""',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                    zIndex: 1,
+                  },
+                }}
+              >
+                <Box sx={{ p: 2, zIndex: 2, width: '100%' }}>
+                  <Typography variant="h6" sx={{ color: 'white', fontWeight: 600 }}>
+                    {category.name}
+                  </Typography>
+                </Box>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
+
+      {/* Commonly Prescribed Section */}
+      <Box className="commonly-prescribed-section" sx={{ mb: 5 }}>
+        <Typography variant="h5" sx={{ fontWeight: 700, mb: 3 }}>
+          Commonly Prescribed
+        </Typography>
+        <Grid container spacing={3}>
+          {mockMedicines.slice(0, 3).map((medicine) => (
+            <Grid item xs={12} sm={6} md={4} key={medicine.id}>
+              <Card
+                sx={{
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  borderRadius: 2,
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                  '&:hover': {
+                    boxShadow: '0 8px 16px rgba(0,0,0,0.15)',
+                    transition: 'all 0.3s ease',
+                  },
+                }}
+              >
+                <Box
+                  sx={{
+                    height: '200px',
+                    backgroundImage: `url('${require(`../assest/pharmacy/${medicine.image}`)}')`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    position: 'relative',
+                  }}
+                >
+                  <Chip
+                    label={medicine.requiresPrescription ? 'RX Only' : 'OTC'}
+                    sx={{
+                      position: 'absolute',
+                      top: 12,
+                      left: 12,
+                      backgroundColor: '#10b981',
+                      color: 'white',
+                      fontWeight: 600,
+                    }}
+                  />
+                </Box>
+                <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                  <Typography variant="caption" color="textSecondary" sx={{ mb: 0.5 }}>
+                    {medicine.type}
+                  </Typography>
+                  <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
+                    {medicine.name}
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary" sx={{ mb: 2, flex: 1 }}>
+                    {medicine.uses}
+                  </Typography>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                    <Typography variant="h6" sx={{ color: '#10b981', fontWeight: 700 }}>
+                      ₹{medicine.price}
+                    </Typography>
+                    <Rating value={medicine.rating} readOnly size="small" />
+                  </Box>
+                  <Button
+                    variant="contained"
+                    fullWidth
+                    sx={{
+                      backgroundColor: '#0ea5a9',
+                      '&:hover': {
+                        backgroundColor: '#0d9097',
+                      },
+                    }}
+                    onClick={() => handleAddToCart(medicine, 1)}
+                  >
+                    Add to Cart
+                  </Button>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
       </Box>
 
       {/* Tabs */}
@@ -256,7 +375,6 @@ function Pharmacy() {
         variant="scrollable"
         scrollButtons="auto"
       >
-        <Tab label="Search Medicines" icon={<Search />} iconPosition="start" />
         <Tab label="Upload Receipt" icon={<CloudUpload />} iconPosition="start" />
         <Tab label="Check Availability" icon={<Check />} iconPosition="start" />
         <Tab label="Top Rated" icon={<Star />} iconPosition="start" />
@@ -265,87 +383,15 @@ function Pharmacy() {
 
       {/* Tab Content */}
       <Box className="pharmacy-content">
-        {/* Tab 1: Search Medicines */}
+        {/* Tab 1: Upload Receipt */}
         {tabValue === 0 && (
-          <Box>
-            <Box className="search-section">
-              <TextField
-                fullWidth
-                placeholder="Search by medicine name, brand, or condition..."
-                value={searchQuery}
-                onChange={handleSearch}
-                variant="outlined"
-                size="large"
-                className="medicine-search-field"
-                InputProps={{
-                  startAdornment: <Search sx={{ mr: 1, color: '#0ea5a9' }} />,
-                }}
-              />
-              <Box className="filter-chips">
-                <Chip
-                  label="All"
-                  onClick={() => setPrescriptionFilter('all')}
-                  variant={prescriptionFilter === 'all' ? 'filled' : 'outlined'}
-                />
-                <Chip
-                  label="OTC Only"
-                  onClick={() => setPrescriptionFilter('otc')}
-                  variant={prescriptionFilter === 'otc' ? 'filled' : 'outlined'}
-                />
-                <Chip
-                  label="Prescription Only"
-                  onClick={() => setPrescriptionFilter('rx')}
-                  variant={prescriptionFilter === 'rx' ? 'filled' : 'outlined'}
-                />
-                <TextField
-                  select
-                  size="small"
-                  value={priceSort}
-                  onChange={(e) => setPriceSort(e.target.value)}
-                  variant="outlined"
-                  className="sort-select"
-                  SelectProps={{
-                    native: true,
-                  }}
-                >
-                  <option value="asc">Price: Low to High</option>
-                  <option value="desc">Price: High to Low</option>
-                </TextField>
-              </Box>
-            </Box>
-
-            {searchQuery && searchResults.length === 0 && (
-              <Alert severity="info">
-                No medicines found matching "{searchQuery}". Try searching by brand or condition.
-              </Alert>
-            )}
-
-            <Grid container spacing={2} className="medicines-grid">
-              {filteredMedicines.map((medicine) => (
-                <Grid item xs={12} sm={6} md={4} key={medicine.id}>
-                  <MedicineCard
-                    medicine={medicine}
-                    onViewDetails={() => {
-                      setSelectedMedicine(medicine);
-                      setMedicineDialogOpen(true);
-                    }}
-                    onAddToCart={handleAddToCart}
-                  />
-                </Grid>
-              ))}
-            </Grid>
-          </Box>
-        )}
-
-        {/* Tab 2: Upload Receipt */}
-        {tabValue === 1 && (
           <Box>
             <ReceiptUploader onMedicinesExtracted={handleReceiptUpload} />
           </Box>
         )}
 
-        {/* Tab 3: Check Availability */}
-        {tabValue === 2 && (
+        {/* Tab 2: Check Availability */}
+        {tabValue === 1 && (
           <Box>
             <Typography variant="h5" sx={{ mb: 3, fontWeight: 600 }}>
               Uploaded Medicines Availability
@@ -411,8 +457,8 @@ function Pharmacy() {
           </Box>
         )}
 
-        {/* Tab 4: Top Rated */}
-        {tabValue === 3 && (
+        {/* Tab 3: Top Rated */}
+        {tabValue === 2 && (
           <Box>
             <Typography variant="h5" sx={{ mb: 3, fontWeight: 600 }}>
               Top Rated Medicines
@@ -436,8 +482,8 @@ function Pharmacy() {
           </Box>
         )}
 
-        {/* Tab 5: Find Pharmacies */}
-        {tabValue === 4 && <PharmacyLocator />}
+        {/* Tab 4: Find Pharmacies */}
+        {tabValue === 3 && <PharmacyLocator />}
       </Box>
 
       {/* Medicine Details Dialog */}
