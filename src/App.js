@@ -12,6 +12,7 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Doctors from './pages/Doctors';
 import BookAppointment from './pages/BookAppointment';
+import AppointmentSuccess from './pages/AppointmentSuccess';
 import Profile from './pages/Profile';
 import About from './pages/About';
 import Contact from './pages/Contact';
@@ -32,6 +33,7 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/book" element={<BookAppointment />} />
+            <Route path="/appointment-success" element={<AppointmentSuccess />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/pharmacy" element={<Pharmacy />} />
           </Routes>

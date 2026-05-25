@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import './BookAppointment.css';
 
 const VISIT_TYPES = [
@@ -85,6 +85,7 @@ function toISODate(date) {
 
 export default function BookAppointment() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [doctorName, setDoctorName] = useState('Dr. Sarah Mitchell');
   const [specialty, setSpecialty] = useState('Senior Cardiologist, MD, FACC');
   const [selectedVisitType, setSelectedVisitType] = useState('in-person');
@@ -137,7 +138,19 @@ export default function BookAppointment() {
   function handleSubmit(e) {
     e.preventDefault();
     const chosenDate = selectedDate || toISODate(dateOptions[0]);
-    alert(`Appointment confirmed for ${doctorName} on ${chosenDate} at ${selectedTime}`);
+    navigate('/appointment-success', {
+      state: {
+        doctorName,
+        specialty,
+        selectedVisitType,
+        selectedDate: chosenDate,
+        selectedTime,
+        patientName: fullName,
+        queueNumber: 3,
+        clinicName: 'CareLink Main Campus',
+        clinicLocation: 'Medical Tower, Level 4',
+      },
+    });
   }
 
   const queueNumber = 3;
