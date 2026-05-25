@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Doctors.css';
 
 // ─── Data ────────────────────────────────────────────────────────────────────
@@ -44,13 +45,19 @@ const RatingBadge = ({ rating }) => {
   );
 };
 
-const SlotChip = ({ day, time }) => {
+const SlotChip = ({ day, time, selected, onClick }) => {
   const full = time === 'Full';
   return (
-    <div className={`slot-chip ${full ? 'full' : ''}`}>
+    <button
+      type="button"
+      className={`slot-chip ${full ? 'full' : ''} ${selected ? 'selected' : ''}`}
+      onClick={onClick}
+      disabled={full}
+      aria-pressed={selected}
+    >
       <div className="slot-day">{day}</div>
       <div className={`slot-time ${full ? 'full' : ''}`}>{time}</div>
-    </div>
+    </button>
   );
 };
 
@@ -76,8 +83,25 @@ const PagBtn = ({ label, active, onClick }) => (
 
 // ─── Doctor Card ─────────────────────────────────────────────────────────────
 
-const DoctorCard = ({ doctor }) => (
-  <div className="doctor-card">
+const DoctorCard = ({ doctor }) => {
+  const navigate = useNavigate();
+  const [selectedSlot, setSelectedSlot] = useState(null);
+
+  const handleBookAppointment = () => {
+    if (!selectedSlot) return;
+
+    const params = new URLSearchParams({
+      doctor: doctor.name,
+      specialty: doctor.specialty,
+      day: selectedSlot.day,
+      time: selectedSlot.time,
+    });
+
+    navigate(`/book?${params.toString()}`);
+  };
+
+  return (
+    <div className="doctor-card">
     {/* Header row */}
     <div className="doctor-header">
       <AvatarPlaceholder name={doctor.name} size={72} />
@@ -102,14 +126,28 @@ const DoctorCard = ({ doctor }) => (
     <div className="slots-section">
       <div className="slots-label">Next Available Slots</div>
       <div className="slots-container">
-        {doctor.nextSlots.map((s, i) => <SlotChip key={i} day={s.day} time={s.time} />)}
+        {doctor.nextSlots.map((s, i) => (
+          <SlotChip
+            key={i}
+            day={s.day}
+            time={s.time}
+            selected={selectedSlot?.day === s.day && selectedSlot?.time === s.time}
+            onClick={() => setSelectedSlot(s)}
+          />
+        ))}
+      </div>
+      <div className="slot-helper">
+        {selectedSlot ? `Selected slot: ${selectedSlot.day} at ${selectedSlot.time}` : 'Select a time slot to continue.'}
       </div>
     </div>
 
     {/* CTA */}
-    <button className="doctor-cta">Check Availability</button>
+    <button className="doctor-cta" onClick={handleBookAppointment} disabled={!selectedSlot}>
+      Book Appointment
+    </button>
   </div>
-);
+  );
+};
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
 
@@ -129,6 +167,11 @@ export default function Doctors() {
     .sort((a, b) => sortBy === 'Highest Rating' ? b.rating - a.rating : b.experience.localeCompare(a.experience));
 
   const totalPages = 8;
+
+  const handlePaginationClick = (page) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <div className="doctors-root">
@@ -243,10 +286,10 @@ export default function Doctors() {
           <div className="pagination">
             <PagBtn label="‹" onClick={() => setCurrentPage(p => Math.max(1, p - 1))} />
             {[1, 2, 3].map(p => (
-              <PagBtn key={p} label={p} active={currentPage === p} onClick={() => setCurrentPage(p)} />
+              <PagBtn key={p} label={p} active={currentPage === p} onClick={() => handlePaginationClick(p)} />
             ))}
             <span className="pagination-dots">…</span>
-            <PagBtn label={8} active={currentPage === 8} onClick={() => setCurrentPage(8)} />
+            <PagBtn label={8} active={currentPage === 8} onClick={() => handlePaginationClick(8)} />
             <PagBtn label="›" onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))} />
           </div>
         </main>
