@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import jsPDF from 'jspdf';
 import './AppointmentSuccess.css';
 
 function formatDate(value) {
@@ -40,6 +41,119 @@ export default function AppointmentSuccess() {
   } = location.state || {};
 
   const visitTypeLabel = selectedVisitType === 'telemedicine' ? 'Telemedicine' : 'In-Person';
+
+  const generatePDF = () => {
+    const doc = new jsPDF();
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    let yPosition = 20;
+
+    // Add header
+    doc.setFontSize(24);
+    doc.setTextColor(31, 78, 121); // CareLink blue
+    doc.text('CareLink', 20, yPosition);
+    yPosition += 15;
+
+    // Add title
+    doc.setFontSize(16);
+    doc.setTextColor(0, 0, 0);
+    doc.text('Appointment Confirmation', 20, yPosition);
+    yPosition += 12;
+
+    // Add confirmation date
+    doc.setFontSize(10);
+    doc.setTextColor(100, 100, 100);
+    doc.text(`Confirmation Date: ${new Date().toLocaleDateString()}`, 20, yPosition);
+    yPosition += 8;
+
+    // Divider line
+    doc.setDrawColor(200, 200, 200);
+    doc.line(20, yPosition, pageWidth - 20, yPosition);
+    yPosition += 10;
+
+    // Patient Information Section
+    doc.setFontSize(12);
+    doc.setTextColor(31, 78, 121);
+    doc.text('Patient Information', 20, yPosition);
+    yPosition += 8;
+
+    doc.setFontSize(10);
+    doc.setTextColor(0, 0, 0);
+    doc.text(`Patient Name: ${patientName}`, 20, yPosition);
+    yPosition += 6;
+    doc.text(`Queue Position: Patient No. ${queueNumber}`, 20, yPosition);
+    yPosition += 10;
+
+    // Appointment Details Section
+    doc.setFontSize(12);
+    doc.setTextColor(31, 78, 121);
+    doc.text('Appointment Details', 20, yPosition);
+    yPosition += 8;
+
+    doc.setFontSize(10);
+    doc.setTextColor(0, 0, 0);
+    doc.text(`Practitioner: ${doctorName}`, 20, yPosition);
+    yPosition += 6;
+    doc.text(`Specialty: ${specialty}`, 20, yPosition);
+    yPosition += 6;
+    doc.text(`Date: ${formatDate(selectedDate)}`, 20, yPosition);
+    yPosition += 6;
+    doc.text(`Time: ${selectedTime}`, 20, yPosition);
+    yPosition += 6;
+    doc.text(`Duration: 45 minutes`, 20, yPosition);
+    yPosition += 6;
+    doc.text(`Visit Type: ${visitTypeLabel}`, 20, yPosition);
+    yPosition += 10;
+
+    // Location Section
+    doc.setFontSize(12);
+    doc.setTextColor(31, 78, 121);
+    doc.text('Clinic Location', 20, yPosition);
+    yPosition += 8;
+
+    doc.setFontSize(10);
+    doc.setTextColor(0, 0, 0);
+    doc.text(`Clinic: ${clinicName}`, 20, yPosition);
+    yPosition += 6;
+    doc.text(`Address: ${clinicLocation}`, 20, yPosition);
+    yPosition += 10;
+
+    // Important Notes Section
+    doc.setFontSize(12);
+    doc.setTextColor(31, 78, 121);
+    doc.text('Important Information', 20, yPosition);
+    yPosition += 8;
+
+    doc.setFontSize(10);
+    doc.setTextColor(0, 0, 0);
+    const notes = [
+      '• Please arrive 15 minutes early for check-in',
+      '• Bring your valid ID',
+      '• If you need to cancel or reschedule, please do so at least 24 hours before your appointment',
+      '• For telemedicine appointments, ensure you have a stable internet connection',
+    ];
+
+    notes.forEach(note => {
+      if (yPosition > pageHeight - 30) {
+        doc.addPage();
+        yPosition = 20;
+      }
+      const splitText = doc.splitTextToSize(note, pageWidth - 40);
+      doc.text(splitText, 20, yPosition);
+      yPosition += splitText.length * 6;
+    });
+
+    yPosition += 5;
+
+    // Footer
+    doc.setFontSize(9);
+    doc.setTextColor(150, 150, 150);
+    doc.text('This is an automatically generated document from CareLink', 20, pageHeight - 10);
+
+    // Generate filename
+    const fileName = `CareLink_Appointment_${patientName.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`;
+    doc.save(fileName);
+  };
 
   return (
     <div className="success-page">
@@ -97,7 +211,7 @@ export default function AppointmentSuccess() {
 
           <div className="success-actions">
             <button type="button" className="primary-action">Add to Calendar</button>
-            <button type="button" className="secondary-action">Download Summary</button>
+            <button type="button" className="secondary-action" onClick={generatePDF}>Download Summary</button>
             <Link to="/doctors" className="outline-action">Return Home</Link>
           </div>
 
