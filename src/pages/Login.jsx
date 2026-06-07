@@ -26,6 +26,8 @@ import {
 import ForgotPasswordDialog from '../components/ForgotPasswordDialog';
 import './Login.css';
 
+import axios from 'axios';
+
 export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -63,22 +65,42 @@ export default function Login() {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    if (!validateForm()) {
-      return;
+  if (!validateForm()) return;
+
+  setLoading(true);
+
+  try {
+    const res = await axios.post(
+      "http://localhost:5000/api/v1/auth/login",
+      {
+        email,
+        password
+      }
+    );
+
+    console.log("Login success:", res.data);
+
+    // store token if backend sends it
+    if (res.data.token) {
+      localStorage.setItem("token", res.data.token);
     }
 
-    setLoading(true);
+    navigate("/dashboard");
 
-    // Simulate API call
-    setTimeout(() => {
-      console.log('Login:', { email, password, rememberMe });
-      navigate('/dashboard');
-    }, 1500);
-  };
+  } catch (err) {
+    console.log(err.response?.data || err.message);
 
+    setErrors({
+      password: err.response?.data?.message || "Invalid login"
+    });
+
+  } finally {
+    setLoading(false);
+  }
+};
   // Social login handlers
   const handleGoogleLogin = () => {
     console.log('Google login initiated');
