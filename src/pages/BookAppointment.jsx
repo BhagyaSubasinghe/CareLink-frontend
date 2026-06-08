@@ -95,6 +95,11 @@ export default function BookAppointment() {
   const [age, setAge] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [queueNumber, setQueueNumber] = useState(null);
+  const [isFetchingQueue, setIsFetchingQueue] = useState(false);
+
+  // MOCK: Replace this with your actual global auth state (e.g., from Context or Redux)
+  const isAuthenticated = true; 
 
   const dateOptions = useMemo(() => buildDateOptions(), []);
   const monthLabel = useMemo(() => formatMonthLabel(dateOptions[0]), [dateOptions]);
@@ -135,8 +140,42 @@ export default function BookAppointment() {
     }
   }, [dateOptions, selectedDate, selectedTime]);
 
+  // Simulate fetching the Queue/Patient Number from the backend
+  useEffect(() => {
+    const fetchQueuePosition = async () => {
+      if (!selectedDate || !selectedTime) return;
+      
+      setIsFetchingQueue(true);
+      try {
+        // In a real app: 
+        // const response = await axios.get(`/api/appointments/queue-position?doctor=${doctorName}&date=${selectedDate}&time=${selectedTime}`);
+        // setQueueNumber(response.data.queueNumber);
+        
+        // Simulating network delay and a dynamic queue number
+        await new Promise((resolve) => setTimeout(resolve, 800));
+        const randomQueue = Math.floor(Math.random() * 5) + 1; // Example: Patient No. 1 to 5
+        setQueueNumber(randomQueue);
+      } catch (error) {
+        console.error("Error fetching queue position", error);
+      } finally {
+        setIsFetchingQueue(false);
+      }
+    };
+
+    fetchQueuePosition();
+  }, [doctorName, selectedDate, selectedTime]);
+
   function handleSubmit(e) {
     e.preventDefault();
+    if (!isAuthenticated) {
+      alert("You must be logged in to book an appointment.");
+      navigate('/login');
+      return;
+    }
+
+    // In a real app, you would POST the booking data to your backend here:
+    // await axios.post('/api/appointments', { patientName: fullName, ... })
+
     const chosenDate = selectedDate || toISODate(dateOptions[0]);
     navigate('/appointment-success', {
       state: {
@@ -146,14 +185,13 @@ export default function BookAppointment() {
         selectedDate: chosenDate,
         selectedTime,
         patientName: fullName,
-        queueNumber: 3,
+        queueNumber,
         clinicName: 'CareLink Main Campus',
         clinicLocation: 'Medical Tower, Level 4',
       },
     });
   }
 
-  const queueNumber = 3;
   const selectedDateLabel = selectedDate
     ? new Date(selectedDate).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })
     : '';
@@ -353,7 +391,9 @@ export default function BookAppointment() {
 
             <div className="queue-card">
               <span>Queue Position</span>
-              <strong>Patient No. {queueNumber}</strong>
+              <strong>
+                {isFetchingQueue ? 'Calculating...' : (queueNumber ? `Patient No. ${queueNumber}` : 'Select Date & Time')}
+              </strong>
             </div>
 
             <button type="submit" className="confirm-button">
