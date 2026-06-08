@@ -9,7 +9,7 @@
 /* Hero Section */
 .pharmacy-hero {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 48px;
   align-items: center;
   margin-bottom: 48px;
@@ -139,6 +139,110 @@
 /* Content Section */
 .pharmacy-content {
   animation: fadeIn 0.3s ease-in-out;
+}
+
+.availability-section {
+  background: #ffffff;
+  border: 1px solid #dbe7e6;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(15, 118, 110, 0.06);
+}
+
+.availability-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.medicine-search-panel {
+  background: #f8fffe;
+  border: 1px solid #dbe7e6;
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.medicine-search-form {
+  display: grid;
+  gap: 12px;
+}
+
+.medicine-search-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.check-availability-button {
+  background-color: #0f766e !important;
+}
+
+.check-availability-button:hover {
+  background-color: #115e59 !important;
+}
+
+.medicine-search-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.medicine-search-field .MuiOutlinedInput-root {
+  background: #ffffff;
+  border-radius: 12px;
+}
+
+.selected-medicine-card {
+  border-radius: 14px;
+  border: 1px solid #0ea5a9;
+  background: linear-gradient(135deg, #f0fdfc 0%, #ffffff 100%);
+}
+
+.selected-medicine-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.availability-summary-card {
+  height: 100%;
+  border-radius: 14px;
+  border: 1px solid #dbe7e6;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+
+.availability-card {
+  height: 100%;
+  border-radius: 14px;
+  border: 1px solid #dbe7e6;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.availability-card:hover {
+  transform: translateY(-2px);
+  border-color: #0ea5a9;
+  box-shadow: 0 10px 24px rgba(15, 118, 110, 0.12);
+}
+
+.availability-card-selected {
+  border-color: #0ea5a9;
+  box-shadow: 0 12px 28px rgba(15, 118, 110, 0.16);
+}
+
+.availability-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
 }
 
 @keyframes fadeIn {

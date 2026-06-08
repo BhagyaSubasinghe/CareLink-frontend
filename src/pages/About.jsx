@@ -141,46 +141,10 @@ export default function About() {
           </div>
         </section>
 
-        <section className="about-footer-extended">
-          <div className="about-footer-inner">
-            <div className="footer-left">
-              <h5>CareLink</h5>
-              <p>Redefining healthcare through compassion and innovation. Your health, our priority.</p>
-              <div className="socials">
-                <span aria-hidden>🔗</span>
-                <span aria-hidden>🐦</span>
-                <span aria-hidden>🔊</span>
-              </div>
-            </div>
-
-            <div className="footer-columns">
-              <div className="footer-col">
-                <h6>Resources</h6>
-                <ul>
-                  <li>Careers</li>
-                  <li>Locations</li>
-                  <li>Newsroom</li>
-                </ul>
-              </div>
-
-              <div className="footer-col">
-                <h6>Legal</h6>
-                <ul>
-                  <li>Privacy Policy</li>
-                  <li>Terms of Service</li>
-                  <li>Patient Rights</li>
-                </ul>
-              </div>
-
-              <div className="footer-col support-col">
-                <h6>Support</h6>
-                <div className="support-number">24/7 Helpline</div>
-                <div className="support-phone">1-800-CARELINK</div>
-              </div>
-            </div>
-          </div>
-        </section>
     </div>
   );
 }
+
+
+
 

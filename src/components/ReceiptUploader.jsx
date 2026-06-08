@@ -57,7 +57,7 @@ const extractMedicinesFromReceipt = (file) => {
   });
 };
 
-export default function ReceiptUploader({ onMedicinesExtracted }) {
+export default function ReceiptUploader({ onMedicinesExtracted = () => {} }) {
   const fileInputRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const [extractedMedicines, setExtractedMedicines] = useState([]);
