@@ -168,7 +168,7 @@ const Contact = () => {
     <Box sx={{ backgroundColor: '#ffffff', minHeight: '100vh' }}>
       
       {/* Hero Section - Full Width */}
-      <Box sx={{ 
+      <Box className="contact-header" sx={{ 
         background: 'linear-gradient(180deg, #e3f2fd 0%, #ffffff 100%)', 
         pt: { xs: 6, md: 8 }, 
         pb: { xs: 10, md: 12 },
@@ -176,7 +176,7 @@ const Contact = () => {
         ml: 'calc(50% - 50vw)',
         px: { xs: 2, sm: 3, md: 4 }
       }}>
-        <Container maxWidth="md" sx={{ textAlign: 'center' }}>
+        <Container maxWidth="md" className="contact-hero-panel" sx={{ textAlign: 'center' }}>
           <Typography variant="h3" component="h1" sx={{ fontWeight: '800', mb: 3, color: '#003399' }}>
             Get in Touch
           </Typography>

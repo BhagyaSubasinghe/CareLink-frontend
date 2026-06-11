@@ -1,43 +1,37 @@
 .contact-container {
-  padding: 60px 20px;
+  padding: 64px 20px;
   min-height: 80vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
 }
 
 .contact-header {
   animation: slideDown 0.6s ease-out;
-}
-
-.contact-header {
-  background: linear-gradient(180deg, #eef6ff 0%, #ffffff 100%);
-  padding: 36px 20px;
-  border-radius: 10px;
+  background: linear-gradient(180deg, #f3fbff 0%, #ffffff 100%);
+  padding: 36px 22px;
+  border-radius: 14px;
   margin-bottom: 28px;
+  box-shadow: 0 8px 30px rgba(3,37,76,0.04);
 }
 
 .contact-header h1 {
-  background: linear-gradient(135deg, #0ea5a9, #0d8b8f);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #003366;
+  font-weight: 800;
 }
 
 .contact-card {
-  transition: all 0.3s ease;
-  border-radius: 12px;
-  border: 1px solid #e0e0e0;
+  transition: all 0.28s cubic-bezier(.2,.9,.3,1);
+  border-radius: 14px;
+  border: 0;
+  background: #ffffff;
 }
 
-.contact-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 24px rgba(14, 165, 169, 0.2);
-  border-color: #0ea5a9;
-}
+.contact-card:hover { transform: translateY(-6px); box-shadow: 0 12px 30px rgba(3,37,76,0.08); }
 
 .contact-form-wrapper {
   background: white;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-  animation: slideUp 0.6s ease-out;
+  box-shadow: 0 10px 30px rgba(8, 48, 107, 0.06);
+  animation: slideUp 0.55s ease-out;
+  border-radius: 12px;
 }
 
 /* Quick Contact dark card */
@@ -46,10 +40,7 @@
   overflow: hidden;
 }
 
-.contact-quick .MuiCardContent-root {
-  padding-top: 16px;
-  padding-bottom: 16px;
-}
+.contact-quick .MuiCardContent-root { padding-top: 14px; padding-bottom: 14px; }
 
 @keyframes slideDown {
   from {
@@ -104,11 +95,12 @@
 }
 
 .contact-form-wrapper .send-button {
-  background-color: #0ea5a9 !important;
+  background: linear-gradient(90deg,#0b5ed7,#08306b) !important;
   color: #fff !important;
-  padding: 12px 14px !important;
+  padding: 12px 18px !important;
   font-weight: 700 !important;
-  border-radius: 8px !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 20px rgba(11, 94, 215, 0.18);
 }
 
 .contact-form-wrapper .MuiFormHelperText-root {
@@ -165,18 +157,8 @@
 }
 
 /* Hero / header panel */
-.contact-hero-panel {
-  background: linear-gradient(180deg,#f3fbfc,#ffffff);
-  padding: 28px 18px;
-  border-radius: 12px;
-  text-align: center;
-  box-shadow: 0 6px 20px rgba(14,165,169,0.06);
-}
-
-.contact-hero-panel h3, .contact-hero-panel .MuiTypography-h3 {
-  color: #0ea5a9;
-  font-weight: 800;
-}
+.contact-hero-panel { background: linear-gradient(180deg,#f8fbff,#ffffff); padding: 28px 18px; border-radius: 12px; text-align: center; box-shadow: 0 6px 18px rgba(3,37,76,0.04); }
+.contact-hero-panel h3, .contact-hero-panel .MuiTypography-h3 { color: #08306b; font-weight: 800; }
 
 /* Top contact cards row */
 .top-contact-cards { margin-top: 18px; }
@@ -199,7 +181,7 @@
 .contact-quick-card .MuiButton-root { border-color: rgba(255,255,255,0.2); color: #fff; }
 
 /* Department directory */
-.department-directory { background: #eef8ff; padding: 16px; }
+.department-directory { background: #f6f9ff; padding: 16px; border-radius: 10px; }
 
 /* Locations */
 .locations-section { margin-top: 48px; }
@@ -251,11 +233,10 @@
   border-radius: 12px;
 }
 
-.location-media {
-  height: 120px;
-  background: linear-gradient(90deg,#eef2ff,#e6f6ff);
-  border-radius: 12px 12px 0 0;
-}
+.location-media { height: 120px; background: linear-gradient(90deg,#eef2ff,#e6f6ff); border-radius: 12px 12px 0 0; }
+
+/* subtle hover for location cards */
+.location-card:hover { transform: translateY(-6px); box-shadow: 0 12px 30px rgba(3,37,76,0.06); }
 
 /* Callout / blue bar at bottom for emergency */
 .contact-emergency {
