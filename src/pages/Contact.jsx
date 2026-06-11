@@ -1,35 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Container,
-  Box,
-  Typography,
-  TextField,
-  Button,
-  Card,
-  CardContent,
-  Grid,
-  Stack,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  Chip,
-  Alert,
-  Paper,
-  InputAdornment,
-  Rating,
-} from '@mui/material';
-import {
-  Email,
-  Phone,
-  LocationOn,
-  AccessTime,
-  Message,
-  CheckCircle,
-  Send,
-  DirectionsCarOutlined
-} from '@mui/icons-material';
-import './Contact.css';
+import { Phone, Mail, MapPin, Navigation, Clock, ChevronDown } from 'lucide-react';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -37,460 +7,340 @@ const Contact = () => {
     email: '',
     phone: '',
     department: '',
-    subject: '',
     message: '',
-    priority: 'medium',
-    contactMethod: 'email',
   });
 
   const [submitted, setSubmitted] = useState(false);
-  const [errors, setErrors] = useState({});
 
   const departments = [
     'General Inquiry',
     'Appointment Support',
-    'Technical Issues',
     'Billing & Payments',
     'Medical Records',
     'Feedback',
-    'Emergency',
   ];
 
-  const contactMethods = [
-    { value: 'email', label: 'Email', icon: '📧' },
-    { value: 'phone', label: 'Phone', icon: '☎️' },
-    { value: 'chat', label: 'Live Chat', icon: '💬' },
-    { value: 'message', label: 'Message', icon: '✉️' },
-  ];
-
-  const contactInfo = [
+  const locations = [
     {
-      icon: <Phone sx={{ color: '#0ea5a9', fontSize: '2rem' }} />,
-      label: 'Phone',
-      value: '+1 (800) 123-4567',
-      available: '24/7',
+      name: 'CareLink Main Campus',
+      address: '123 Healthcare Plaza, Medical District, NY 10001',
+      status: 'Open 24/7',
+      statusColor: 'bg-emerald-100 text-emerald-700',
     },
     {
-      icon: <Email sx={{ color: '#0ea5a9', fontSize: '2rem' }} />,
-      label: 'Email',
-      value: 'support@carelink.com',
-      available: 'Response in 2-4 hours',
+      name: 'CareLink Westside Clinic',
+      address: '456 West River Dr, Riverside, NY 10023',
+      status: '8AM - 8PM',
+      statusColor: 'bg-slate-100 text-slate-600',
     },
     {
-      icon: <LocationOn sx={{ color: '#0ea5a9', fontSize: '2rem' }} />,
-      label: 'Address',
-      value: '123 Healthcare Ave, Medical City, MC 12345',
-      available: 'Mon-Fri 9AM-6PM',
-    },
-    {
-      icon: <Message sx={{ color: '#0ea5a9', fontSize: '2rem' }} />,
-      label: 'Live Chat',
-      value: 'Available on website',
-      available: 'Mon-Sat 10AM-8PM',
+      name: 'CareLink Pediatric Center',
+      address: '88 Kids Care Rd, Medical City, NY 10045',
+      status: '9AM - 5PM',
+      statusColor: 'bg-slate-100 text-slate-600',
     },
   ];
-
-  const validateForm = () => {
-    const newErrors = {};
-    if (!formData.name.trim()) newErrors.name = 'Name is required';
-    if (!formData.email.trim()) newErrors.email = 'Email is required';
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
-      newErrors.email = 'Invalid email format';
-    if (!formData.phone.trim()) newErrors.phone = 'Phone number is required';
-    if (!formData.department) newErrors.department = 'Please select a department';
-    if (!formData.subject.trim()) newErrors.subject = 'Subject is required';
-    if (!formData.message.trim()) newErrors.message = 'Message cannot be empty';
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-    if (errors[name]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: '',
-      }));
-    }
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      console.log('Form submitted:', formData);
+    if (formData.name && formData.email && formData.message) {
       setSubmitted(true);
       setTimeout(() => {
-        setFormData({
-          name: '',
-          email: '',
-          phone: '',
-          department: '',
-          subject: '',
-          message: '',
-          priority: 'medium',
-          contactMethod: 'email',
-        });
         setSubmitted(false);
-      }, 5000);
+        setFormData({ name: '', email: '', phone: '', department: '', message: '' });
+      }, 3000);
     }
   };
 
-  const getPriorityColor = (priority) => {
-    const colors = {
-      low: '#4caf50',
-      medium: '#ff9800',
-      high: '#f44336',
-      urgent: '#8b0000',
-    };
-    return colors[priority];
-  };
-
-  const getResponseTime = (department) => {
-    const times = {
-      'Emergency': '5 minutes',
-      'Technical Issues': '1 hour',
-      'Appointment Support': '30 minutes',
-      'Billing & Payments': '2-4 hours',
-      'Medical Records': '24 hours',
-      'General Inquiry': '24 hours',
-      'Feedback': '48 hours',
-    };
-    return times[department] || '24-48 hours';
-  };
-
   return (
-    <>
-    <Box sx={{ backgroundColor: '#ffffff', minHeight: '100vh' }}>
+    <div className="min-h-screen bg-[#f8fbff] font-sans">
       
-      {/* Hero Section - Full Width */}
-      <Box className="contact-header" sx={{ 
-        background: 'linear-gradient(180deg, #e3f2fd 0%, #ffffff 100%)', 
-        pt: { xs: 6, md: 8 }, 
-        pb: { xs: 10, md: 12 },
-        width: '100vw',
-        ml: 'calc(50% - 50vw)',
-        px: { xs: 2, sm: 3, md: 4 }
-      }}>
-        <Container maxWidth="md" className="contact-hero-panel" sx={{ textAlign: 'center' }}>
-          <Typography variant="h3" component="h1" sx={{ fontWeight: '800', mb: 3, color: '#003399' }}>
-            Get in Touch
-          </Typography>
-          <Typography variant="body1" sx={{ color: '#4b5563', lineHeight: 1.6 }}>
-            Your health and well-being are our top priorities. Whether you have a question about our services, need to schedule an appointment, or require billing assistance, our dedicated team is here to support you every step of the way.
-          </Typography>
-        </Container>
-      </Box>
+      {/* Hero Section */}
+      <div className="w-full bg-gradient-to-b from-[#e3f0fc] to-[#f8fbff] pt-16 pb-12 px-4 text-center">
+        <h1 className="text-4xl md:text-5xl font-bold text-[#003399] tracking-tight mb-4">
+          Get in Touch
+        </h1>
+        <p className="max-w-2xl mx-auto text-sm md:text-base text-slate-600 leading-relaxed">
+          Your health and well-being are our top priorities. Whether you have a question
+          about our services, need to schedule an appointment, or require billing
+          assistance, our dedicated team is here to support you every step of the way.
+        </p>
+      </div>
 
-      {/* Main Form Section - Centered Container */}
-      <Container maxWidth="lg" sx={{ pb: 8, mt: -4 }}>
-        <Grid container spacing={4} sx={{ maxWidth: '1000px', mx: 'auto' }}>
-          {/* Form */}
-          <Grid item xs={12} md={7}>
-            <Paper elevation={0} sx={{ p: { xs: 3, md: 5 }, borderRadius: '12px', border: '1px solid #e5e7eb', backgroundColor: '#fff', height: '100%' }}>
-              <Typography variant="h5" sx={{ mb: 4, fontWeight: '700', color: '#1f2937' }}>
-                Send us a Message
-              </Typography>
+      {/* Main Content */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          
+          {/* Left Column: Contact Form */}
+          <div className="lg:col-span-2 bg-white rounded-xl border border-gray-200 p-8 shadow-sm">
+            <h2 className="text-2xl font-bold text-slate-800 mb-8">Send us a Message</h2>
 
-              {submitted && (
-              <Alert severity="success" icon={<CheckCircle />} sx={{ mb: 3 }}>
-                ✅ Thank you! Your message has been sent successfully. We'll respond within the estimated time.
-              </Alert>
+            {submitted && (
+              <div className="mb-6 bg-emerald-50 text-emerald-700 px-4 py-3 rounded-lg text-sm font-medium border border-emerald-200">
+                ✓ Message sent successfully! We'll be in touch soon.
+              </div>
             )}
 
-            <form onSubmit={handleSubmit} className="message-form">
-              <Stack spacing={2.5}>
-                {/* Row 1: Name and Email */}
-                <Grid container spacing={2}>
-                  <Grid item xs={12} sm={6}>
-                    <Typography variant="body2" sx={{ fontWeight: 600, color: '#08306b', mb: 0.5 }}>
-                      Full Name
-                    </Typography>
-                    <TextField
-                      fullWidth
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      error={!!errors.name}
-                      helperText={errors.name}
-                      placeholder="John Doe"
-                      variant="outlined"
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <Typography variant="body2" sx={{ fontWeight: 600, color: '#08306b', mb: 0.5 }}>
-                      Email Address
-                    </Typography>
-                    <TextField
-                      fullWidth
-                      name="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      error={!!errors.email}
-                      helperText={errors.email}
-                      placeholder="john@example.com"
-                      variant="outlined"
-                    />
-                  </Grid>
-                </Grid>
-
-                {/* Row 2: Phone and Department */}
-                <Grid container spacing={2}>
-                  <Grid item xs={12} sm={6}>
-                    <Typography variant="body2" sx={{ fontWeight: 600, color: '#08306b', mb: 0.5 }}>
-                      Phone Number
-                    </Typography>
-                    <TextField
-                      fullWidth
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      error={!!errors.phone}
-                      helperText={errors.phone}
-                      placeholder="+1 (555) 000-0000"
-                      variant="outlined"
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <Typography variant="body2" sx={{ fontWeight: 600, color: '#08306b', mb: 0.5 }}>
-                      Department
-                    </Typography>
-                    <FormControl fullWidth error={!!errors.department}>
-                      <Select
-                        name="department"
-                        value={formData.department || ''}
-                        onChange={handleChange}
-                        displayEmpty
-                      >
-                        <MenuItem value="" disabled>General Inquiry</MenuItem>
-                        {departments.map((dept) => (
-                          <MenuItem key={dept} value={dept}>
-                            {dept}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                      {errors.department && (
-                        <Typography variant="caption" sx={{ color: '#d32f2f', mt: 0.5 }}>
-                          {errors.department}
-                        </Typography>
-                      )}
-                    </FormControl>
-                  </Grid>
-                </Grid>
-
-                {/* Message */}
-                <Box>
-                  <Typography variant="body2" sx={{ fontWeight: 600, color: '#08306b', mb: 0.5 }}>
-                    Message
-                  </Typography>
-                  <TextField
-                    fullWidth
-                    name="message"
-                    value={formData.message}
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Name & Email Row */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-xs font-bold text-[#003399] mb-2 uppercase tracking-wide">
+                    Full Name
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
                     onChange={handleChange}
-                    error={!!errors.message}
-                    helperText={errors.message}
-                    placeholder="How can we help you today?"
-                    variant="outlined"
-                    multiline
-                    rows={4}
+                    placeholder="John Doe"
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-[#003399] focus:ring-2 focus:ring-blue-100 text-sm text-slate-700 placeholder-slate-400 transition"
+                    required
                   />
-                </Box>
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-[#003399] mb-2 uppercase tracking-wide">
+                    Email Address
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="john@example.com"
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-[#003399] focus:ring-2 focus:ring-blue-100 text-sm text-slate-700 placeholder-slate-400 transition"
+                    required
+                  />
+                </div>
+              </div>
 
-                {/* Submit Button */}
-                <Box>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    className="send-button"
-                    sx={{
-                      backgroundColor: '#08306b',
-                      color: 'white',
-                      padding: '10px 24px',
-                      fontSize: '0.9rem',
-                      fontWeight: 'bold',
-                      textTransform: 'none',
-                      '&:hover': {
-                        backgroundColor: '#06204a',
-                      },
-                      borderRadius: '6px',
-                      mt: 2,
-                    }}
-                  >
-                    Send Message
-                  </Button>
-                </Box>
-              </Stack>
+              {/* Phone & Department Row */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-xs font-bold text-[#003399] mb-2 uppercase tracking-wide">
+                    Phone Number
+                  </label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    placeholder="+1 (555) 000-0000"
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-[#003399] focus:ring-2 focus:ring-blue-100 text-sm text-slate-700 placeholder-slate-400 transition"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-[#003399] mb-2 uppercase tracking-wide">
+                    Department
+                  </label>
+                  <div className="relative">
+                    <select
+                      name="department"
+                      value={formData.department}
+                      onChange={handleChange}
+                      className="w-full appearance-none px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-[#003399] focus:ring-2 focus:ring-blue-100 text-sm text-slate-700 bg-white transition"
+                    >
+                      <option value="">Select Department</option>
+                      {departments.map((dept) => (
+                        <option key={dept} value={dept}>
+                          {dept}
+                        </option>
+                      ))}
+                    </select>
+                    <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Message */}
+              <div>
+                <label className="block text-xs font-bold text-[#003399] mb-2 uppercase tracking-wide">
+                  Message
+                </label>
+                <textarea
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  rows="5"
+                  placeholder="How can we help you today?"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[#003399] focus:ring-2 focus:ring-blue-100 text-sm text-slate-700 placeholder-slate-400 resize-none transition"
+                  required
+                />
+              </div>
+
+              {/* Submit Button */}
+              <div className="pt-2">
+                <button
+                  type="submit"
+                  className="bg-[#003399] hover:bg-[#002266] text-white font-bold py-3 px-8 rounded-lg transition-all duration-200 transform hover:scale-105 active:scale-95 w-full sm:w-auto"
+                >
+                  Send Message
+                </button>
+              </div>
             </form>
-          </Paper>
-        </Grid>
+          </div>
 
-        {/* Quick Contact + Department Directory */}
-        <Grid item xs={12} md={5}>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, height: '100%' }}>
-            <Card className="contact-quick-card" elevation={0} sx={{ borderRadius: '12px', overflow: 'hidden', backgroundColor: '#003399', color: '#fff', p: { xs: 2, md: 3 } }}>
-              <CardContent>
-                <Typography variant="h6" sx={{ fontWeight: '600', color: '#fff', mb: 3 }}>
-                  Quick Contact
-                </Typography>
+          {/* Right Column: Contact Cards */}
+          <div className="space-y-6">
+            
+            {/* Quick Contact Card */}
+            <div className="bg-[#003a9f] rounded-xl p-6 text-white shadow-lg">
+              <h3 className="text-lg font-bold mb-6">Quick Contact</h3>
+              
+              <div className="space-y-5">
+                {/* Phone */}
+                <div className="flex items-start gap-4">
+                  <div className="border border-white/20 p-2.5 rounded-full flex-shrink-0 flex items-center justify-center bg-white/10">
+                    <Phone size={16} />
+                  </div>
+                  <div>
+                    <p className="text-xs text-blue-200 font-medium mb-1">24/7 Helpline</p>
+                    <p className="font-bold text-sm tracking-wide">1-800-CARE-LINK</p>
+                  </div>
+                </div>
 
-                <Stack spacing={3}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                    <Box sx={{ backgroundColor: 'rgba(255,255,255,0.1)', p: 1, borderRadius: '50%', display: 'flex' }}>
-                      <Phone sx={{ fontSize: '1.2rem' }} />
-                    </Box>
-                    <Box>
-                      <Typography variant="caption" sx={{ color: '#cde7ff' }}>24/7 Helpline</Typography>
-                      <Typography variant="body1" sx={{ fontWeight: 'bold' }}>1-800-CARE-LINK</Typography>
-                    </Box>
-                  </Box>
+                {/* Email */}
+                <div className="flex items-start gap-4">
+                  <div className="border border-white/20 p-2.5 rounded-full flex-shrink-0 flex items-center justify-center bg-white/10">
+                    <Mail size={16} />
+                  </div>
+                  <div>
+                    <p className="text-xs text-blue-200 font-medium mb-1">Email Support</p>
+                    <p className="font-bold text-sm tracking-wide">contact@carelink.health</p>
+                  </div>
+                </div>
 
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                    <Box sx={{ backgroundColor: 'rgba(255,255,255,0.1)', p: 1, borderRadius: '50%', display: 'flex' }}>
-                      <Email sx={{ fontSize: '1.2rem' }} />
-                    </Box>
-                    <Box>
-                      <Typography variant="caption" sx={{ color: '#cde7ff' }}>Email Support</Typography>
-                      <Typography variant="body2" sx={{ fontWeight: 500 }}>contact@carelink.health</Typography>
-                    </Box>
-                  </Box>
+                {/* Address */}
+                <div className="flex items-start gap-4">
+                  <div className="border border-white/20 p-2.5 rounded-full flex-shrink-0 flex items-center justify-center bg-white/10">
+                    <MapPin size={16} />
+                  </div>
+                  <div>
+                    <p className="text-xs text-blue-200 font-medium mb-1">Physical Address</p>
+                    <p className="font-bold text-sm leading-snug">
+                      123 Healthcare Plaza,<br />Medical District, NY
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-                  <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
-                    <Box sx={{ backgroundColor: 'rgba(255,255,255,0.1)', p: 1, borderRadius: '50%', display: 'flex' }}>
-                      <LocationOn sx={{ fontSize: '1.2rem' }} />
-                    </Box>
-                    <Box>
-                      <Typography variant="caption" sx={{ color: '#cde7ff' }}>Physical Address</Typography>
-                      <Typography variant="body2" sx={{ fontWeight: 500 }}>123 Healthcare Plaza,<br/>Medical District</Typography>
-                    </Box>
-                  </Box>
-                </Stack>
-              </CardContent>
-            </Card>
+            {/* Department Directory */}
+            <div className="bg-[#eef3fb] rounded-xl p-6 border border-blue-100 shadow-sm">
+              <h3 className="text-base font-bold text-[#003399] mb-4">Department Directory</h3>
+              
+              <div className="space-y-1 divide-y divide-blue-200">
+                <div className="flex justify-between items-center py-3">
+                  <span className="text-sm font-semibold text-slate-800">Emergency</span>
+                  <span className="text-sm font-bold text-red-600">911</span>
+                </div>
+                <div className="flex justify-between items-center py-3">
+                  <span className="text-sm font-semibold text-[#003399]">Pharmacy</span>
+                  <span className="text-sm font-bold text-[#003399]">Ext. 402</span>
+                </div>
+                <div className="flex justify-between items-center py-3">
+                  <span className="text-sm font-semibold text-[#003399]">Laboratory</span>
+                  <span className="text-sm font-bold text-[#003399]">Ext. 515</span>
+                </div>
+                <div className="flex justify-between items-center py-3">
+                  <span className="text-sm font-semibold text-[#003399]">Billing Dept.</span>
+                  <span className="text-sm font-bold text-[#003399]">Ext. 209</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-            <Card className="department-directory" elevation={0} sx={{ borderRadius: '12px', overflow: 'hidden', backgroundColor: '#eef2ff', p: { xs: 2, md: 3 }, border: '1px solid #dbeafe', flexGrow: 1 }}>
-              <CardContent>
-                <Typography variant="h6" sx={{ mb: 3, fontWeight: '700', color: '#003399' }}>
-                  Department Directory
-                </Typography>
-                <Stack spacing={2} divider={<Box sx={{ height: '1px', backgroundColor: 'rgba(0,51,153,0.1)' }} />}>
-                  {[
-                    { name: 'Emergency', ext: '911', color: '#d32f2f' },
-                    { name: 'Pharmacy', ext: 'Ext. 402', color: '#003399' },
-                    { name: 'Laboratory', ext: 'Ext. 515', color: '#003399' },
-                    { name: 'Billing Dept.', ext: 'Ext. 209', color: '#003399' },
-                  ].map((d) => (
-                    <Box key={d.name} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', pt: 1, pb: 1 }}>
-                      <Typography variant="body2" sx={{ fontWeight: 600, color: '#374151' }}>{d.name}</Typography>
-                      <Typography variant="body2" sx={{ fontWeight: 'bold', color: d.color }}>{d.ext}</Typography>
-                    </Box>
-                  ))}
-                </Stack>
-              </CardContent>
-            </Card>
-          </Box>
-        </Grid>
-      </Grid>
-      </Container>
+      {/* Locations Section */}
+      <div className="bg-white w-full py-16 border-t border-gray-200">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-[#003399] mb-2">Our Locations</h2>
+            <p className="text-slate-600">Find a CareLink facility near you.</p>
+          </div>
 
-      {/* Locations Section - Full width background container */}
-      <Box className="locations-section" sx={{ 
-        width: '100vw', 
-        ml: 'calc(50% - 50vw)', 
-        backgroundColor: '#f4f7ff', 
-        py: { xs: 6, md: 10 } 
-      }}>
-        <Container maxWidth="lg">
-        <Box sx={{ textAlign: 'center', mb: 4 }}>
-          <Typography variant="h5" sx={{ fontWeight: 'bold', color: '#08306b', mb: 1 }}>
-            Our Locations
-          </Typography>
-          <Typography variant="body2" sx={{ color: '#6b7280' }}>
-            Find a CareLink facility near you
-          </Typography>
-        </Box>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            
+            {/* Map Placeholder */}
+            <div className="bg-gradient-to-br from-[#8C98A5] to-[#6B7A8F] rounded-xl flex items-center justify-center min-h-96 relative overflow-hidden shadow-lg">
+              <div className="absolute inset-0 opacity-10">
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent"></div>
+              </div>
+              
+              <div className="relative z-10 text-center">
+                <MapPin size={48} className="text-white mx-auto mb-4 opacity-80" />
+                <p className="text-white font-semibold text-lg">Interactive Map</p>
+                <p className="text-blue-100 text-sm mt-2">(Click to view full map)</p>
+              </div>
 
-        <Grid container spacing={3} alignItems="stretch">
-          <Grid item xs={12} md={6}>
-            <Card elevation={0} sx={{ height: '100%', borderRadius: '12px', overflow: 'hidden', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#e2e8f0', minHeight: '350px' }}>
-               {/* Map Placeholder image background could be inserted here. Using fallback style */}
-               <Box sx={{ position: 'absolute', inset: 0, opacity: 0.5, backgroundImage: 'url("https://www.transparenttextures.com/patterns/cubes.png")' }} />
-               <Button variant="contained" sx={{ bgcolor: 'white', color: '#08306b', zIndex: 1, borderRadius: '24px', fontWeight: 'bold', '&:hover': { bgcolor: '#f8fafc' } }} startIcon={<LocationOn sx={{ color: '#08306b' }} />}>
-                 Interactive Map (Placeholder)
-               </Button>
-            </Card>
-          </Grid>
+              {/* Floating action buttons */}
+              <div className="absolute right-6 top-1/2 -translate-y-1/2 space-y-3 z-20">
+                <button className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm border border-white/40 flex items-center justify-center hover:bg-white/30 transition text-white hover:scale-110 duration-200">
+                  <Navigation size={18} />
+                </button>
+                <button className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm border border-white/40 flex items-center justify-center hover:bg-white/30 transition text-white hover:scale-110 duration-200">
+                  <MapPin size={18} />
+                </button>
+                <button className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm border border-white/40 flex items-center justify-center hover:bg-white/30 transition text-white hover:scale-110 duration-200">
+                  <Phone size={18} />
+                </button>
+              </div>
+            </div>
 
-          <Grid item xs={12} md={6}>
-            <Stack spacing={2}>
-              {[
-                { title: 'CareLink Main Campus', addr: '123 Healthcare Plaza, Medical District, NY 10001', tag: 'Open 24/7', tagBg: '#a7f3d0', tagColor: '#065f46' },
-                { title: 'CareLink Westside Clinic', addr: '456 West River Dr. Riverside, NY 10023', tag: '8AM - 8PM', tagBg: '#f1f5f9', tagColor: '#475569' },
-                { title: 'CareLink Pediatric Center', addr: '88 Kids Care Rd, Medical City, NY 10045', tag: '9AM - 5PM', tagBg: '#f1f5f9', tagColor: '#475569' }
-              ].map((loc) => (
-                <Card key={loc.title} elevation={0} sx={{ borderRadius: '12px', border: '1px solid #e2e8f0' }}>
-                  <CardContent sx={{ p: '24px !important' }}>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1 }}>
-                      <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#1a1a1a' }}>{loc.title}</Typography>
-                      <Chip label={loc.tag} size="small" sx={{ backgroundColor: loc.tagBg, color: loc.tagColor, fontWeight: 700, fontSize: '0.7rem', height: '22px' }} />
-                    </Box>
-                    <Typography variant="body2" sx={{ color: '#6b7280', mb: 2 }}>{loc.addr}</Typography>
-                    
-                    <Box sx={{ display: 'flex', gap: 3 }}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', color: '#08306b' }}>
-                        <DirectionsCarOutlined sx={{ fontSize: '1.2rem', mr: 0.5 }} />
-                        <Typography variant="caption" sx={{ fontWeight: 600 }}>Get Directions</Typography>
-                      </Box>
-                      <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', color: '#08306b' }}>
-                        <AccessTime sx={{ fontSize: '1.2rem', mr: 0.5 }} />
-                        <Typography variant="caption" sx={{ fontWeight: 600 }}>View Hours</Typography>
-                      </Box>
-                    </Box>
-                  </CardContent>
-                </Card>
+            {/* Location Cards */}
+            <div className="space-y-4">
+              {locations.map((location, idx) => (
+                <div
+                  key={idx}
+                  className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow duration-200"
+                >
+                  <div className="flex justify-between items-start mb-3">
+                    <h3 className="font-bold text-slate-800 text-base">{location.name}</h3>
+                    <span className={`text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider ${location.statusColor}`}>
+                      {location.status}
+                    </span>
+                  </div>
+                  <p className="text-slate-600 text-sm mb-4">{location.address}</p>
+                  <div className="flex flex-wrap gap-4">
+                    <button className="flex items-center gap-2 text-[#003399] text-sm font-bold hover:underline transition">
+                      <Navigation size={14} /> Get Directions
+                    </button>
+                    <button className="flex items-center gap-2 text-[#003399] text-sm font-bold hover:underline transition">
+                      <Clock size={14} /> View Hours
+                    </button>
+                  </div>
+                </div>
               ))}
-            </Stack>
-          </Grid>
-        </Grid>
-        </Container>
-      </Box>
+            </div>
+          </div>
+        </div>
+      </div>
 
-    {/* Bottom Emergency Banner */}
-    <Box sx={{ 
-      backgroundColor: '#003399', 
-      color: 'white', 
-      py: 4, 
-      width: '100vw',
-      ml: 'calc(50% - 50vw)',
-    }}>
-      <Container maxWidth="lg">
-        <Grid container alignItems="center" justifyContent="space-between" spacing={3}>
-          <Grid item xs={12} md={7}>
-            <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 0.5 }}>
-              Need immediate medical attention?
-            </Typography>
-            <Typography variant="body2" sx={{ color: '#e0f2ff' }}>
-              Our emergency rooms are staffed with specialists 24/7.
-            </Typography>
-          </Grid>
-          <Grid item xs={12} md={5} sx={{ display: 'flex', justifyContent: { xs: 'flex-start', md: 'flex-end' }, gap: 2 }}>
-            <Button variant="contained" sx={{ backgroundColor: 'white', color: '#003399', fontWeight: 'bold', px: 3, '&:hover': { backgroundColor: '#f0f4ff' } }}>
+      {/* Emergency Footer */}
+      <div className="bg-[#003a9f] w-full py-10 shadow-lg">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="text-center md:text-left">
+            <h2 className="text-white text-lg font-bold mb-1">Need immediate medical attention?</h2>
+            <p className="text-blue-100 text-sm">Our emergency rooms are staffed with specialists 24/7.</p>
+          </div>
+          <div className="flex gap-3 w-full md:w-auto">
+            <button className="flex-1 md:flex-none bg-white text-[#003399] font-bold text-sm px-6 py-2.5 rounded-lg hover:bg-gray-50 transition-colors whitespace-nowrap">
               Find Nearest ER
-            </Button>
-            <Button variant="outlined" sx={{ borderColor: 'rgba(255,255,255,0.5)', color: 'white', fontWeight: 'bold', px: 3, '&:hover': { borderColor: 'white', backgroundColor: 'rgba(255,255,255,0.1)' } }}>
+            </button>
+            <button className="flex-1 md:flex-none border-2 border-white text-white font-bold text-sm px-6 py-2.5 rounded-lg hover:bg-white/10 transition-colors whitespace-nowrap">
               Call Dispatch
-            </Button>
-          </Grid>
-        </Grid>
-      </Container>
-    </Box>
-    </Box>
-    </>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
   );
 };
 

@@ -1,266 +1,86 @@
-.contact-container {
-  padding: 64px 20px;
-  min-height: 80vh;
-  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+/* Empty - using Tailwind */
+/* Contact.css - Optional custom styles for Contact page */
+
+/* Smooth transitions */
+.contact-form input,
+.contact-form textarea,
+.contact-form select {
+  transition: all 0.2s ease;
 }
 
-.contact-header {
-  animation: slideDown 0.6s ease-out;
-  background: linear-gradient(180deg, #f3fbff 0%, #ffffff 100%);
-  padding: 36px 22px;
-  border-radius: 14px;
-  margin-bottom: 28px;
-  box-shadow: 0 8px 30px rgba(3,37,76,0.04);
+.contact-form input:focus,
+.contact-form textarea:focus,
+.contact-form select:focus {
+  transform: translateY(-2px);
 }
 
-.contact-header h1 {
-  color: #003366;
-  font-weight: 800;
-}
-
-.contact-card {
-  transition: all 0.28s cubic-bezier(.2,.9,.3,1);
-  border-radius: 14px;
-  border: 0;
-  background: #ffffff;
-}
-
-.contact-card:hover { transform: translateY(-6px); box-shadow: 0 12px 30px rgba(3,37,76,0.08); }
-
-.contact-form-wrapper {
-  background: white;
-  box-shadow: 0 10px 30px rgba(8, 48, 107, 0.06);
-  animation: slideUp 0.55s ease-out;
-  border-radius: 12px;
-}
-
-/* Quick Contact dark card */
-.contact-quick {
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-.contact-quick .MuiCardContent-root { padding-top: 14px; padding-bottom: 14px; }
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.contact-form-wrapper .MuiFormControl-root {
-  width: 100%;
+/* Button animations */
+button {
   transition: all 0.3s ease;
 }
 
-/* Ensure hover/border styles target the correct MUI element structure */
-.contact-form-wrapper .MuiFormControl-root:hover .MuiOutlinedInput-notchedOutline,
-.contact-form-wrapper .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
-  border-color: #0ea5a9;
+button:hover {
+  transform: translateY(-1px);
 }
 
-.contact-form-wrapper .MuiOutlinedInput-root {
-  border-radius: 6px;
+button:active {
+  transform: translateY(0px);
 }
 
-/* Removed custom input padding so Material-UI label aligns properly */
-
-/* Form spacing fixes */
-.contact-form-wrapper .message-form .MuiTextField-root,
-.contact-form-wrapper .message-form .MuiFormControl-root {
-  width: 100%;
-  margin-bottom: 12px;
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
 }
 
-.contact-form-wrapper .priority-level .MuiButton-root {
-  text-transform: capitalize;
-  border-radius: 6px;
-  min-width: 72px;
+/* Remove number spinner on tel input */
+input[type="tel"]::-webkit-outer-spin-button,
+input[type="tel"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
-.contact-form-wrapper .send-button {
-  background: linear-gradient(90deg,#0b5ed7,#08306b) !important;
-  color: #fff !important;
-  padding: 12px 18px !important;
-  font-weight: 700 !important;
-  border-radius: 12px !important;
-  box-shadow: 0 8px 20px rgba(11, 94, 215, 0.18);
+input[type="tel"][type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
 }
 
-.contact-form-wrapper .MuiFormHelperText-root {
-  font-size: 0.8rem;
+/* Card hover effects */
+.location-card {
+  transition: all 0.3s ease;
 }
 
-.contact-form-wrapper .MuiOutlinedInput-root.Mui-focused {
-  box-shadow: 0 0 0 3px rgba(14, 165, 169, 0.1);
+.location-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(0, 51, 153, 0.1);
 }
 
-.MuiAlert-standardSuccess {
-  background-color: #e8f5e9;
-  color: #2e7d32;
-  border-radius: 8px;
+/* Form success message animation */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+.success-message {
+  animation: slideDown 0.3s ease-out;
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .contact-container {
-    padding: 40px 15px;
+  h1 {
+    font-size: 1.875rem;
   }
 
-  .contact-header h1 {
-    font-size: 1.8rem;
+  h2 {
+    font-size: 1.5rem;
   }
-}
 
-/* Form Input Focus States */
-.contact-form-wrapper .MuiFormHelperText-root {
-  font-size: 0.75rem;
-  margin-top: 4px;
-}
-
-/* Button hover effects */
-.contact-form-wrapper button[type='submit'] {
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(14, 165, 169, 0.3);
-}
-
-.contact-form-wrapper button[type='submit']:hover {
-  box-shadow: 0 6px 20px rgba(14, 165, 169, 0.4);
-  transform: translateY(-2px);
-}
-
-/* Priority buttons styling */
-.MuiButtonBase-root.MuiButton-outlined {
-  transition: all 0.2s ease;
-}
-
-/* Card in form styling */
-.contact-form-wrapper .MuiPaper-root {
-  border-radius: 8px;
-  transition: all 0.3s ease;
-}
-
-/* Hero / header panel */
-.contact-hero-panel { background: linear-gradient(180deg,#f8fbff,#ffffff); padding: 28px 18px; border-radius: 12px; text-align: center; box-shadow: 0 6px 18px rgba(3,37,76,0.04); }
-.contact-hero-panel h3, .contact-hero-panel .MuiTypography-h3 { color: #08306b; font-weight: 800; }
-
-/* Top contact cards row */
-.top-contact-cards { margin-top: 18px; }
-.top-contact-cards .contact-card.small { padding: 12px 8px; }
-.top-contact-cards .contact-card.small .MuiCardContent-root { padding: 18px; }
-.top-contact-cards .contact-card.small { height: 150px; display:flex; align-items:center; }
-.top-contact-cards .contact-card-icon { font-size: 36px; color: #0ea5a9; display:block; margin: 0 auto 6px; }
-.top-contact-cards .contact-availability {
-  background: #e6f9f9; color: #0b8b86; border-radius: 16px; padding: 4px 8px; font-size: 0.75rem; margin-top: 6px;
-}
-
-/* Quick contact gradient card */
-.contact-quick-card {
-  background: linear-gradient(180deg,#0b5ed7,#08306b);
-  color: #fff;
-  padding: 18px;
-  border-radius: 12px;
-}
-.contact-quick-card .MuiTypography-h6 { color: #fff; }
-.contact-quick-card .MuiButton-root { border-color: rgba(255,255,255,0.2); color: #fff; }
-
-/* Department directory */
-.department-directory { background: #f6f9ff; padding: 16px; border-radius: 10px; }
-
-/* Locations */
-.locations-section { margin-top: 48px; }
-.locations-feature { border-radius: 12px; overflow: hidden; }
-.locations-feature-media { height: 220px; background: linear-gradient(90deg,#eef2ff,#e6f6ff); }
-.location-list-card { border-radius: 10px; }
-
-/* Emergency callout */
-.contact-emergency { background: linear-gradient(90deg,#08306b,#0b5ed7); color:#fff; padding:18px; border-radius:8px; margin-top:28px; text-align:center; }
-
-/* Sticky right column on larger screens */
-@media (min-width: 960px) {
-  .contact-quick-card { position: sticky; top: 100px; }
-}
-
-/* Responsive tweaks */
-@media (max-width: 768px) {
-  .top-contact-cards .contact-card.small { height: auto; }
-  .locations-feature-media { height: 140px; }
-}
-
-/* Layout and right column styling to match provided mock */
-.contact-form-wrapper {
-  background: #fff;
-  padding: 28px;
-}
-
-.contact-quick-card {
-  background: linear-gradient(180deg,#0b5ed7,#08306b);
-  color: #fff;
-  padding: 20px;
-  border-radius: 12px;
-}
-
-.department-directory {
-  background: #eef6ff;
-  padding: 16px;
-  border-radius: 12px;
-}
-
-.locations-section {
-  margin-top: 48px;
-}
-
-.location-card {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  border-radius: 12px;
-}
-
-.location-media { height: 120px; background: linear-gradient(90deg,#eef2ff,#e6f6ff); border-radius: 12px 12px 0 0; }
-
-/* subtle hover for location cards */
-.location-card:hover { transform: translateY(-6px); box-shadow: 0 12px 30px rgba(3,37,76,0.06); }
-
-/* Callout / blue bar at bottom for emergency */
-.contact-emergency {
-  background: linear-gradient(90deg,#08306b,#0b5ed7);
-  color: #fff;
-  padding: 18px 20px;
-  border-radius: 8px;
-  margin-top: 28px;
-  text-align: center;
-}
-
-/* Make form narrower on wide screens similar to mock */
-@media (min-width: 1000px) {
-  .contact-form-wrapper { padding: 36px; }
-  .contact-container .MuiGrid-root > .MuiGrid-item:first-child { max-width: 680px; }
-}
-
-/* Support Cards */
-.contact-form-wrapper .MuiCard-root {
-  border-radius: 12px;
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.contact-form-wrapper .MuiCard-root:hover {
-  box-shadow: 0 8px 24px rgba(14, 165, 169, 0.15);
+  .contact-form {
+    padding: 1.5rem;
+  }
 }
