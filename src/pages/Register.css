@@ -58,21 +58,23 @@
 }
 
 .google-btn {
-  color: #ea4335;
+  color: #374151;
+  border-color: #d1d5db;
 }
 
 .google-btn:hover {
-  border-color: #ea4335;
-  background: #fef2f2;
+  border-color: #c1c5cb;
+  background: #f9fafb;
 }
 
 .facebook-btn {
-  color: #1877f2;
+  color: #374151;
+  border-color: #d1d5db;
 }
 
 .facebook-btn:hover {
-  border-color: #1877f2;
-  background: #f0f7ff;
+  border-color: #c1c5cb;
+  background: #f9fafb;
 }
 
 /* Form */

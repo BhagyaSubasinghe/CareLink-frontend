@@ -49,10 +49,7 @@ export default function Home() {
                 <span className="icon-wrap">👨‍⚕️</span>
                 <input placeholder="Doctor name or specialty" value={doctorSearch} onChange={(e) => setDoctorSearch(e.target.value)} />
               </div>
-              <div className="hero-search-field">
-                <span className="icon-wrap">📍</span>
-                <input placeholder="Select location" value={locationSearch} onChange={(e) => setLocationSearch(e.target.value)} />
-              </div>
+              
               <button className="hero-search-submit">Find a Doctor</button>
             </form>
 
