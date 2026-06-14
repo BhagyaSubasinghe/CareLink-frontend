@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import axios from 'axios'; // 💡 Axios import කළා backend සම්බන්ධ කරන්න
 import {
   Container,
   Box,
@@ -14,13 +15,11 @@ import {
   Alert,
   InputAdornment,
   IconButton,
-  Dialog,
   Divider,
 } from '@mui/material';
 import {
   Visibility,
   VisibilityOff,
-  Google,
   Facebook,
   Mail,
   Lock,
@@ -129,12 +128,12 @@ export default function Register() {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    // Clear error for this field when user starts typing
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: '' }));
     }
   };
 
+  // 💡 නිවැරදි කළ handleSubmit එක (v1 නැතිව ඇත්තම Backend URL එක සහිතව)
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -143,37 +142,50 @@ export default function Register() {
     }
 
     setLoading(true);
+    setErrors({});
 
-    // Simulate API call
-    setTimeout(() => {
-      console.log('Register:', formData);
+    try {
+      const res = await axios.post("http://localhost:5000/api/auth/register", {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phone: formData.phone,
+        password: formData.password,
+        confirmPassword: formData.confirmPassword // backend එකෙන් confirmPassword එකත් ඉල්ලනවා
+      });
+
+      console.log('Register Success:', res.data);
       setSuccess(true);
-      setLoading(false);
 
-      // Redirect after success
       setTimeout(() => {
         navigate('/login', { state: { email: formData.email } });
       }, 2000);
-    }, 1500);
+
+    } catch (err) {
+      console.error('Register Error:', err.response?.data || err.message);
+      setErrors({
+        email: err.response?.data?.message || 'Registration failed. Please try again.'
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   // Social login handlers
   const handleGoogleRegister = () => {
     console.log('Google registration initiated');
-    // In production: initiate Google OAuth flow
     alert('Google registration would be initiated here');
   };
 
   const handleFacebookRegister = () => {
     console.log('Facebook registration initiated');
-    // In production: initiate Facebook OAuth flow
     alert('Facebook registration would be initiated here');
   };
 
   if (success) {
     return (
       <Container maxWidth="sm" className="register-container">
-        <Box className="success-state">
+        <Box className="success-state" sx={{ textAlign: 'center', mt: 8 }}>
           <Check sx={{ fontSize: 80, color: '#10b981', mb: 2 }} />
           <Typography variant="h4" sx={{ fontWeight: 700, mb: 1 }}>
             Registration Successful!
@@ -182,9 +194,6 @@ export default function Register() {
             Your account has been created successfully. Redirecting to login...
           </Typography>
           <LinearProgress sx={{ mb: 2 }} />
-          <Typography variant="caption" color="textSecondary">
-            You will be redirected shortly
-          </Typography>
         </Box>
       </Container>
     );
@@ -192,11 +201,11 @@ export default function Register() {
 
   return (
     <Container maxWidth="sm" className="register-container">
-      <Card className="register-card">
+      <Card className="register-card" sx={{ mt: 4, mb: 4 }}>
         <CardContent>
           {/* Header */}
-          <Box className="register-header">
-            <Typography variant="h3" sx={{ fontWeight: 700, mb: 1 }}>
+          <Box className="register-header" sx={{ mb: 3, textAlign: 'center' }}>
+            <Typography variant="h4" sx={{ fontWeight: 700, mb: 1 }}>
               Create Account
             </Typography>
             <Typography variant="body1" color="textSecondary">
@@ -205,14 +214,13 @@ export default function Register() {
           </Box>
 
           {/* Social Login */}
-          <Box className="social-login">
+          <Box className="social-login" sx={{ mb: 2 }}>
             <Button
               fullWidth
               variant="outlined"
               startIcon={<GoogleIcon />}
               onClick={handleGoogleRegister}
-              className="social-btn google-btn"
-              sx={{ mb: 1 }}
+              sx={{ mb: 1, textTransform: 'none' }}
             >
               Sign up with Google
             </Button>
@@ -221,7 +229,7 @@ export default function Register() {
               variant="outlined"
               startIcon={<Facebook sx={{ color: '#1877F2' }} />}
               onClick={handleFacebookRegister}
-              className="social-btn facebook-btn"
+              sx={{ textTransform: 'none' }}
             >
               Sign up with Facebook
             </Button>
@@ -235,7 +243,6 @@ export default function Register() {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="register-form">
-            {/* Name Fields */}
             <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2, mb: 2 }}>
               <TextField
                 fullWidth
@@ -246,7 +253,6 @@ export default function Register() {
                 error={!!errors.firstName}
                 helperText={errors.firstName}
                 variant="outlined"
-                size="medium"
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -254,7 +260,6 @@ export default function Register() {
                     </InputAdornment>
                   ),
                 }}
-                placeholder="John"
               />
               <TextField
                 fullWidth
@@ -265,7 +270,6 @@ export default function Register() {
                 error={!!errors.lastName}
                 helperText={errors.lastName}
                 variant="outlined"
-                size="medium"
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -273,11 +277,9 @@ export default function Register() {
                     </InputAdornment>
                   ),
                 }}
-                placeholder="Doe"
               />
             </Box>
 
-            {/* Email Field */}
             <TextField
               fullWidth
               label="Email Address"
@@ -288,7 +290,6 @@ export default function Register() {
               error={!!errors.email}
               helperText={errors.email}
               variant="outlined"
-              size="medium"
               margin="normal"
               InputProps={{
                 startAdornment: (
@@ -297,10 +298,8 @@ export default function Register() {
                   </InputAdornment>
                 ),
               }}
-              placeholder="john@example.com"
             />
 
-            {/* Phone Field */}
             <TextField
               fullWidth
               label="Phone Number"
@@ -310,7 +309,6 @@ export default function Register() {
               error={!!errors.phone}
               helperText={errors.phone}
               variant="outlined"
-              size="medium"
               margin="normal"
               InputProps={{
                 startAdornment: (
@@ -319,10 +317,8 @@ export default function Register() {
                   </InputAdornment>
                 ),
               }}
-              placeholder="9876543210"
             />
 
-            {/* Password Field */}
             <TextField
               fullWidth
               label="Password"
@@ -333,7 +329,6 @@ export default function Register() {
               error={!!errors.password}
               helperText={errors.password}
               variant="outlined"
-              size="medium"
               margin="normal"
               InputProps={{
                 startAdornment: (
@@ -343,81 +338,33 @@ export default function Register() {
                 ),
                 endAdornment: (
                   <InputAdornment position="end">
-                    <IconButton
-                      onClick={() => setShowPassword(!showPassword)}
-                      edge="end"
-                      size="small"
-                    >
+                    <IconButton onClick={() => setShowPassword(!showPassword)} edge="end" size="small">
                       {showPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
                 ),
               }}
-              placeholder="Enter a strong password"
             />
 
-            {/* Password Strength Indicator */}
             {formData.password && (
               <Box sx={{ mt: 1.5, mb: 2 }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
                   <Typography variant="caption" sx={{ fontWeight: 600 }}>
                     Password Strength
                   </Typography>
-                  <Typography
-                    variant="caption"
-                    sx={{
-                      fontWeight: 700,
-                      color:
-                        passwordStrengthLabel.color === 'error'
-                          ? '#ef4444'
-                          : passwordStrengthLabel.color === 'warning'
-                          ? '#f59e0b'
-                          : passwordStrengthLabel.color === 'info'
-                          ? '#3b82f6'
-                          : '#10b981',
-                    }}
-                  >
+                  <Typography variant="caption" sx={{ fontWeight: 700, color: passwordStrengthLabel.color === 'error' ? '#ef4444' : passwordStrengthLabel.color === 'warning' ? '#f59e0b' : passwordStrengthLabel.color === 'info' ? '#3b82f6' : '#10b981' }}>
                     {passwordStrengthLabel.label}
                   </Typography>
                 </Box>
-                <LinearProgress
-                  variant="determinate"
-                  value={passwordStrength}
-                  sx={{
-                    height: 6,
-                    borderRadius: 3,
-                    backgroundColor: '#e5e7eb',
-                    '& .MuiLinearProgress-bar': {
-                      backgroundColor:
-                        passwordStrengthLabel.color === 'error'
-                          ? '#ef4444'
-                          : passwordStrengthLabel.color === 'warning'
-                          ? '#f59e0b'
-                          : passwordStrengthLabel.color === 'info'
-                          ? '#3b82f6'
-                          : '#10b981',
-                    },
-                  }}
-                />
-
-                {/* Requirements Checklist */}
+                <LinearProgress variant="determinate" value={passwordStrength} sx={{ height: 6, borderRadius: 3, backgroundColor: '#e5e7eb', '& .MuiLinearProgress-bar': { backgroundColor: passwordStrengthLabel.color === 'error' ? '#ef4444' : passwordStrengthLabel.color === 'warning' ? '#f59e0b' : passwordStrengthLabel.color === 'info' ? '#3b82f6' : '#10b981' } }} />
+                
                 <Box sx={{ mt: 1.5, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1 }}>
                   {Object.entries(PASSWORD_REQUIREMENTS).map(([key, req]) => {
                     const isMet = req.regex.test(formData.password);
                     return (
                       <Box key={key} sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                        {isMet ? (
-                          <Check sx={{ fontSize: '1rem', color: '#10b981' }} />
-                        ) : (
-                          <Close sx={{ fontSize: '1rem', color: '#9ca3af' }} />
-                        )}
-                        <Typography
-                          variant="caption"
-                          sx={{
-                            color: isMet ? '#10b981' : '#9ca3af',
-                            textDecoration: isMet ? 'line-through' : 'none',
-                          }}
-                        >
+                        {isMet ? <Check sx={{ fontSize: '1rem', color: '#10b981' }} /> : <Close sx={{ fontSize: '1rem', color: '#9ca3af' }} />}
+                        <Typography variant="caption" sx={{ color: isMet ? '#10b981' : '#9ca3af', textDecoration: isMet ? 'line-through' : 'none' }}>
                           {req.label}
                         </Typography>
                       </Box>
@@ -427,7 +374,6 @@ export default function Register() {
               </Box>
             )}
 
-            {/* Confirm Password Field */}
             <TextField
               fullWidth
               label="Confirm Password"
@@ -438,7 +384,6 @@ export default function Register() {
               error={!!errors.confirmPassword}
               helperText={errors.confirmPassword}
               variant="outlined"
-              size="medium"
               margin="normal"
               InputProps={{
                 startAdornment: (
@@ -448,29 +393,21 @@ export default function Register() {
                 ),
                 endAdornment: (
                   <InputAdornment position="end">
-                    <IconButton
-                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                      edge="end"
-                      size="small"
-                    >
+                    <IconButton onClick={() => setShowConfirmPassword(!showConfirmPassword)} edge="end" size="small">
                       {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
                 ),
               }}
-              placeholder="Re-enter your password"
             />
 
-            {/* Terms Agreement */}
             <FormControlLabel
               control={
                 <Checkbox
                   checked={agreeToTerms}
                   onChange={(e) => {
                     setAgreeToTerms(e.target.checked);
-                    if (errors.terms) {
-                      setErrors((prev) => ({ ...prev, terms: '' }));
-                    }
+                    if (errors.terms) setErrors((prev) => ({ ...prev, terms: '' }));
                   }}
                   color="primary"
                 />
@@ -495,7 +432,6 @@ export default function Register() {
               </Alert>
             )}
 
-            {/* Submit Button */}
             <Button
               fullWidth
               variant="contained"
@@ -507,29 +443,23 @@ export default function Register() {
                 mb: 2,
                 background: 'linear-gradient(135deg, #0ea5a9 0%, #0d9488 100%)',
                 fontWeight: 600,
-                fontSize: '1rem',
-                py: 1.5,
                 textTransform: 'none',
+                py: 1.5
               }}
             >
               {loading ? 'Creating Account...' : 'Create Account'}
             </Button>
           </form>
 
-          {/* Login Link & Forgot Password */}
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <Typography variant="body2" color="textSecondary">
               Already have an account?{' '}
-              <Link
-                to="/login"
-                style={{ color: '#0ea5a9', textDecoration: 'none', fontWeight: 600 }}
-              >
+              <Link to="/login" style={{ color: '#0ea5a9', textDecoration: 'none', fontWeight: 600 }}>
                 Login here
               </Link>
             </Typography>
           </Box>
 
-          {/* Forgot Password Link */}
           <Box sx={{ mt: 2, textAlign: 'center' }}>
             <Button
               variant="text"
@@ -543,11 +473,9 @@ export default function Register() {
         </CardContent>
       </Card>
 
-      {/* Forgot Password Dialog */}
-      <ForgotPasswordDialog
-        open={forgotPasswordOpen}
-        onClose={() => setForgotPasswordOpen(false)}
-      />
+      <ForgotPasswordDialog open={forgotPasswordOpen} onClose={() => setForgotPasswordOpen(false)} />
     </Container>
   );
 }
+
+ 
