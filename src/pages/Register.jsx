@@ -133,8 +133,8 @@ export default function Register() {
     }
   };
 
-  // 💡 නිවැරදි කළ handleSubmit එක (v1 නැතිව ඇත්තම Backend URL එක සහිතව)
-  const handleSubmit = async (e) => {
+  
+const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!validateForm()) {
@@ -145,13 +145,16 @@ export default function Register() {
     setErrors({});
 
     try {
+      
+      const cleanPhone = formData.phone.replace(/\D/g, ''); 
+
       const res = await axios.post("http://localhost:5000/api/auth/register", {
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        email: formData.email,
-        phone: formData.phone,
+        firstName: formData.firstName.trim(),
+        lastName: formData.lastName.trim(),
+        email: formData.email.trim().toLowerCase(),
+        phone: String(cleanPhone),
         password: formData.password,
-        confirmPassword: formData.confirmPassword // backend එකෙන් confirmPassword එකත් ඉල්ලනවා
+        confirmPassword: formData.confirmPassword
       });
 
       console.log('Register Success:', res.data);
@@ -163,13 +166,35 @@ export default function Register() {
 
     } catch (err) {
       console.error('Register Error:', err.response?.data || err.message);
-      setErrors({
-        email: err.response?.data?.message || 'Registration failed. Please try again.'
-      });
+      
+      const responseData = err.response?.data;
+      
+      
+      if (responseData?.errors && Array.isArray(responseData.errors)) {
+        const backendErrors = {};
+        responseData.errors.forEach(error => {
+          backendErrors[error.field] = error.message;
+        });
+        setErrors(backendErrors);
+      } 
+      
+      else if (responseData?.message) {
+        setErrors({
+          email: responseData.message 
+        });
+      } 
+      
+      else {
+        setErrors({
+          email: 'Registration failed. Please try again.'
+        });
+      }
     } finally {
       setLoading(false);
     }
-  };
+  }; 
+    
+   
 
   // Social login handlers
   const handleGoogleRegister = () => {
