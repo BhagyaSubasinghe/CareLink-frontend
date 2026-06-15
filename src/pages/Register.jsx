@@ -148,14 +148,17 @@ const handleSubmit = async (e) => {
       
       const cleanPhone = formData.phone.replace(/\D/g, ''); 
 
-      const res = await axios.post("http://localhost:5000/api/auth/register", {
+      const res = await axios.post("http://localhost:5000/api/v1/auth/register", {
         firstName: formData.firstName.trim(),
         lastName: formData.lastName.trim(),
         email: formData.email.trim().toLowerCase(),
         phone: String(cleanPhone),
         password: formData.password,
         confirmPassword: formData.confirmPassword
-      });
+      },
+       {
+    withCredentials: true 
+  });
 
       console.log('Register Success:', res.data);
       setSuccess(true);
@@ -164,35 +167,44 @@ const handleSubmit = async (e) => {
         navigate('/login', { state: { email: formData.email } });
       }, 2000);
 
-    } catch (err) {
-      console.error('Register Error:', err.response?.data || err.message);
-      
-      const responseData = err.response?.data;
-      
-      
-      if (responseData?.errors && Array.isArray(responseData.errors)) {
-        const backendErrors = {};
-        responseData.errors.forEach(error => {
-          backendErrors[error.field] = error.message;
-        });
-        setErrors(backendErrors);
-      } 
-      
-      else if (responseData?.message) {
-        setErrors({
-          email: responseData.message 
-        });
-      } 
-      
-      else {
-        setErrors({
-          email: 'Registration failed. Please try again.'
-        });
-      }
-    } finally {
-      setLoading(false);
+    } 
+     catch (err) {
+    console.error('Register Error Detailed:', err);
+    const responseData = err.response?.data;
+
+    // 1. Backend server ekata connect wenna bari nam (CORS hari server down hari nam)
+    if (!err.response) {
+      setErrors({email:'unable to connect to server' });
+      return;
     }
-  }; 
+
+    // 2. Express-validator validation errors thiyenawanam (ex: password short nam)
+    if (responseData?.errors && Array.isArray(responseData.errors)) {
+      const backendErrors = {};
+      responseData.errors.forEach(error => {
+        if (error.field) backendErrors[error.field] = error.message;
+      });
+      setErrors(backendErrors);
+    } 
+    // 3. Controller eken ena duplicate email/phone messages thiyenawanam
+    else if (responseData?.message) {
+      const backendMessage = responseData.message;
+      if (backendMessage.toLowerCase().includes('email')) {
+        setErrors({ email: backendMessage });
+      } else if (backendMessage.toLowerCase().includes('phone')) {
+        setErrors({ phone: backendMessage });
+      } else {
+        setErrors({ email: backendMessage });
+      }
+    } 
+    // 4. Unsuspected error ekak nam status code eka pennanna
+    else {
+      setErrors({ email: `Server error status: ${err.response.status}` });
+    }
+  } finally {
+    setLoading(false);
+  }
+}
     
    
 
