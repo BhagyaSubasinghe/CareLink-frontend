@@ -99,7 +99,7 @@ export default function BookAppointment() {
   const [isFetchingQueue, setIsFetchingQueue] = useState(false);
 
   // MOCK: Replace this with your actual global auth state (e.g., from Context or Redux)
-  const isAuthenticated = true; 
+  const isAuthenticated = !!localStorage.getItem('token'); // Example: Check if token exists in localStorage 
 
   const dateOptions = useMemo(() => buildDateOptions(), []);
   const monthLabel = useMemo(() => formatMonthLabel(dateOptions[0]), [dateOptions]);
@@ -150,7 +150,8 @@ export default function BookAppointment() {
         // In a real app: 
         // const response = await axios.get(`/api/appointments/queue-position?doctor=${doctorName}&date=${selectedDate}&time=${selectedTime}`);
         // setQueueNumber(response.data.queueNumber);
-        
+        const response = await axios.get(`http://localhost:5000/api/v1/bookings/queue-position?doctorId=${id}&date=${selectedDate}&time=${selectedTime}`);
+setQueueNumber(response.data.queueNumber);
         // Simulating network delay and a dynamic queue number
         await new Promise((resolve) => setTimeout(resolve, 800));
         const randomQueue = Math.floor(Math.random() * 5) + 1; // Example: Patient No. 1 to 5
@@ -165,32 +166,65 @@ export default function BookAppointment() {
     fetchQueuePosition();
   }, [doctorName, selectedDate, selectedTime]);
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    if (!isAuthenticated) {
-      alert("You must be logged in to book an appointment.");
-      navigate('/login');
-      return;
-    }
+    const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    // In a real app, you would POST the booking data to your backend here:
-    // await axios.post('/api/appointments', { patientName: fullName, ... })
-
-    const chosenDate = selectedDate || toISODate(dateOptions[0]);
-    navigate('/appointment-success', {
-      state: {
-        doctorName,
-        specialty,
-        selectedVisitType,
-        selectedDate: chosenDate,
-        selectedTime,
-        patientName: fullName,
-        queueNumber,
-        clinicName: 'CareLink Main Campus',
-        clinicLocation: 'Medical Tower, Level 4',
-      },
-    });
+  // 1️⃣ 🛑 පළමුවෙන්ම LOGIN වෙලාද කියලා Check කරනවා (Request එක යවන්න කලින්ම)
+  const token = localStorage.getItem("token");
+  
+  if (!token) {
+    alert("You must be logged in to book an appointment. Redirecting to login page...");
+    navigate('/login');
+    return;
   }
+
+  // URL Query parameters වලින් Doctor ගේ විස්තර ගන්නා ආකාරය (ඔයාගේ URL එකට අනුව)
+  const urlParams = new URLSearchParams(window.location.search);
+  const doctorNameFromUrl = urlParams.get('doctor') || doctorName;
+
+  // Date එකක් තෝරලා නැත්නම් default එක ගන්නවා
+  const chosenDate = selectedDate || toISODate(dateOptions[0]);
+
+  try {
+    // 2️⃣ Backend එකට අවශ්‍ය Data Object එක හදනවා
+    const bookingData = {
+      doctor: id || "65c1f0f2b34d2c001f8d4e12", // ⚠️ මෙතනට ඔයාගේ Doctor Model එකේ සැබෑ Mongo ID එකක් pass වෙන්න ඕනේ (URL එකෙන් හෝ state එකෙන්)
+      date: chosenDate,
+      timeSlot: selectedTime || "09:00", // තෝරාගත් වෙලාව
+      visitType: selectedVisitType || "in-person",
+      reason: "General consultation for " + fullName,
+      symptoms: "Patient age: " + age
+    };
+
+    // 3️⃣ API Request එක යවනවා
+    const response = await axios.post('http://localhost:5000/api/v1/bookings', bookingData, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    if (response.data.success) {
+      navigate('/appointment-success', {
+        state: {
+          doctorName: doctorNameFromUrl,
+          specialty,
+          selectedVisitType,
+          selectedDate: chosenDate,
+          selectedTime,
+          patientName: fullName,
+          queueNumber: response.data.queueNumber,
+          clinicName: 'CareLink Main Campus',
+          clinicLocation: 'Medical Tower, Level 4',
+        },
+      });
+    }
+  } catch (error) {
+    // 4️⃣ Backend එකෙන් එන නියම Error Message එක (උදා: Token Expired, Fully Booked) මෙතනින් පෙන්වනවා
+    if (error.response && error.response.data && error.response.data.message) {
+      alert(error.response.data.message);
+    } else {
+      alert("We are experiencing a technical issue. Please try again later or contact the site administrator for assistance.");
+    }
+  }
+};
 
   const selectedDateLabel = selectedDate
     ? new Date(selectedDate).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })
