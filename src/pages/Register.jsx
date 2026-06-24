@@ -190,13 +190,14 @@ const handleSubmit = async (e) => {
     else if (responseData?.message) {
       const backendMessage = responseData.message;
       if (backendMessage.toLowerCase().includes('email')) {
-        setErrors({ email: backendMessage });
+      
+        setErrors({ email: backendMessage }); 
       } else if (backendMessage.toLowerCase().includes('phone')) {
         setErrors({ phone: backendMessage });
       } else {
         setErrors({ email: backendMessage });
       }
-    } 
+    }
     // 4. Unsuspected error ekak nam status code eka pennanna
     else {
       setErrors({ email: `Server error status: ${err.response.status}` });

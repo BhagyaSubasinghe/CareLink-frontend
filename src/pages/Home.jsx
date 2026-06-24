@@ -27,13 +27,34 @@ export default function Home() {
     };
   }, [heroImage]);
 
-  const handleFindDoctor = (e) => {
-    e.preventDefault();
-    const params = new URLSearchParams();
-    if (doctorSearch) params.set('q', doctorSearch);
-    if (locationSearch) params.set('location', locationSearch);
-    navigate({ pathname: '/doctors', search: params.toString() });
-  };
+   const handleFindDoctor = async (e) => {
+  e.preventDefault();
+
+  try {
+    const response = await axios.get(
+      `http://localhost:5000/api/doctors/search?q=${doctorSearch}`
+    );
+
+    if (response.data.length > 0) {
+      const params = new URLSearchParams();
+      params.set("q", doctorSearch);
+
+      if (locationSearch) {
+        params.set("location", locationSearch);
+      }
+
+      navigate({
+        pathname: "/doctors",
+        search: params.toString(),
+      });
+    } else {
+      alert("No doctor found with this name.");
+    }
+  } catch (error) {
+    console.error(error);
+    alert("Something went wrong. Please try again.");
+  }
+};
 
   return (
     <div className="home-root">
@@ -131,7 +152,8 @@ export default function Home() {
             <div className="feature-icon">🚑</div>
             <div className="feature-title">Emergency Booking</div>
             <div className="feature-desc">Critical care access 24/7. Immediate ambulance dispatch and trauma unit notification.</div>
-            <button style={{marginTop:12,background:'#ef4444',color:'#fff',padding:'10px 14px',borderRadius:10,border:0}}>Call Now</button>
+            
+            <button onClick={() => navigate('/contacts')} style={{marginTop:12,background:'#dc2626',color:'#fff',padding:'10px 14px',borderRadius:10,border:0}}>CALL Now</button>
           </div>
           <div className="feature-card">
             <div className="feature-icon">📅</div>
