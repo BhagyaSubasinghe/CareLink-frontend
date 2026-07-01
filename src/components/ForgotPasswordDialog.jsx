@@ -16,6 +16,7 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { Mail, Lock, CheckCircle, ArrowBack } from '@mui/icons-material';
+import api from '../services/api';
 
 export default function ForgotPasswordDialog({ open, onClose }) {
   const [step, setStep] = useState(0); // 0: email, 1: verify code, 2: new password, 3: success
@@ -25,7 +26,7 @@ export default function ForgotPasswordDialog({ open, onClose }) {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
+  const [resetToken, setResetToken] = useState('');
 
   const handleReset = () => {
     setStep(0);
@@ -33,8 +34,8 @@ export default function ForgotPasswordDialog({ open, onClose }) {
     setVerificationCode('');
     setNewPassword('');
     setConfirmPassword('');
+    setResetToken('');
     setError('');
-    setSuccess(false);
     setLoading(false);
   };
 
@@ -56,12 +57,14 @@ export default function ForgotPasswordDialog({ open, onClose }) {
     }
 
     setLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      console.log('Reset email sent to:', email);
-      setLoading(false);
+    try {
+      await api.post('/auth/forgot-password', { email: email.trim().toLowerCase() });
       setStep(1);
-    }, 1500);
+    } catch (err) {
+      setError(err.response?.data?.message || 'Unable to send reset email. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   // Step 2: Verify Code
@@ -71,18 +74,25 @@ export default function ForgotPasswordDialog({ open, onClose }) {
       setError('Please enter the verification code');
       return;
     }
-    if (verificationCode.length < 4) {
-      setError('Verification code should be at least 4 characters');
+    if (verificationCode.length !== 6) {
+      setError('Verification code must be 6 digits');
       return;
     }
 
     setLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      console.log('Code verified');
-      setLoading(false);
+    try {
+      const response = await api.post('/auth/verify-otp', {
+        email: email.trim().toLowerCase(),
+        otp: verificationCode.trim()
+      });
+
+      setResetToken(response.data.resetToken || '');
       setStep(2);
-    }, 1500);
+    } catch (err) {
+      setError(err.response?.data?.message || 'Invalid or expired code. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   // Step 3: Set New Password
@@ -101,14 +111,37 @@ export default function ForgotPasswordDialog({ open, onClose }) {
       return;
     }
 
+    if (!/[A-Z]/.test(newPassword) || !/[a-z]/.test(newPassword) || !/[0-9]/.test(newPassword) || !/[!@#$%^&*]/.test(newPassword)) {
+      setError('Password must include uppercase, lowercase, number, and special character (!@#$%^&*).');
+      return;
+    }
+
+    if (!resetToken) {
+      setError('Reset session expired. Please restart the password reset process.');
+      return;
+    }
+
     setLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      console.log('Password reset successfully');
-      setLoading(false);
-      setSuccess(true);
+    try {
+      const response = await api.post('/auth/reset-password', {
+        resetToken,
+        password: newPassword,
+        confirmPassword
+      });
+
+      if (response.data?.token) {
+        localStorage.setItem('token', response.data.token);
+      }
+      if (response.data?.user) {
+        localStorage.setItem('user', JSON.stringify(response.data.user));
+      }
+
       setStep(3);
-    }, 1500);
+    } catch (err) {
+      setError(err.response?.data?.message || 'Unable to reset password. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

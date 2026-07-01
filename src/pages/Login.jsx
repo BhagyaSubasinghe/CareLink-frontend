@@ -36,7 +36,7 @@ const GoogleIcon = () => (
 import ForgotPasswordDialog from '../components/ForgotPasswordDialog';
 import './Login.css';
 
-import axios from 'axios';
+import api from '../services/api';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -81,15 +81,13 @@ export default function Login() {
   if (!validateForm()) return;
 
   setLoading(true);
+    setErrors({});
 
   try {
-    const res = await axios.post(
-      "http://localhost:5000/api/v1/auth/login",
-      {
-        email,
-        password
-      }
-    );
+    const res = await api.post('/auth/login', {
+      email: email.trim().toLowerCase(),
+      password
+    });
 
     console.log("Login success:", res.data);
 
@@ -97,14 +95,19 @@ export default function Login() {
     if (res.data.token) {
       localStorage.setItem("token", res.data.token);
     }
+    if (res.data.user) {
+      localStorage.setItem('user', JSON.stringify(res.data.user));
+    }
 
     navigate("/dashboard");
 
   } catch (err) {
     console.log(err.response?.data || err.message);
 
+    const backendMessage = err.response?.data?.message;
+
     setErrors({
-      password: err.response?.data?.message || "Invalid login"
+      password: backendMessage || 'Invalid login'
     });
 
   } finally {

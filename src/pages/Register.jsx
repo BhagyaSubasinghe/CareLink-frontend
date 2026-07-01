@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios'; // 💡 Axios import කළා backend සම්බන්ධ කරන්න
+import api from '../services/api';
 import {
   Container,
   Box,
@@ -109,8 +109,8 @@ export default function Register() {
 
     if (!formData.password) {
       newErrors.password = 'Password is required';
-    } else if (passwordStrength < 60) {
-      newErrors.password = 'Password is too weak. Meet more requirements.';
+    } else if (passwordStrength < 100) {
+      newErrors.password = 'Password must include uppercase, lowercase, number, special character, and at least 8 characters.';
     }
 
     if (formData.password !== formData.confirmPassword) {
@@ -148,17 +148,14 @@ const handleSubmit = async (e) => {
       
       const cleanPhone = formData.phone.replace(/\D/g, ''); 
 
-      const res = await axios.post("http://localhost:5000/api/v1/auth/register", {
+      const res = await api.post('/auth/register', {
         firstName: formData.firstName.trim(),
         lastName: formData.lastName.trim(),
         email: formData.email.trim().toLowerCase(),
         phone: String(cleanPhone),
         password: formData.password,
         confirmPassword: formData.confirmPassword
-      },
-       {
-    withCredentials: true 
-  });
+      });
 
       console.log('Register Success:', res.data);
       setSuccess(true);
@@ -168,13 +165,13 @@ const handleSubmit = async (e) => {
       }, 2000);
 
     } 
-     catch (err) {
+    catch (err) {
     console.error('Register Error Detailed:', err);
     const responseData = err.response?.data;
 
     // 1. Backend server ekata connect wenna bari nam (CORS hari server down hari nam)
     if (!err.response) {
-      setErrors({email:'unable to connect to server' });
+      setErrors({ general: 'Unable to connect to server. Please try again.' });
       return;
     }
 
@@ -184,23 +181,29 @@ const handleSubmit = async (e) => {
       responseData.errors.forEach(error => {
         if (error.field) backendErrors[error.field] = error.message;
       });
+      if (Object.keys(backendErrors).length === 0 && responseData?.message) {
+        backendErrors.general = responseData.message;
+      }
       setErrors(backendErrors);
     } 
     // 3. Controller eken ena duplicate email/phone messages thiyenawanam
     else if (responseData?.message) {
       const backendMessage = responseData.message;
-      if (backendMessage.toLowerCase().includes('email')) {
-      
-        setErrors({ email: backendMessage }); 
-      } else if (backendMessage.toLowerCase().includes('phone')) {
+      const normalizedMessage = backendMessage.toLowerCase();
+
+      if (normalizedMessage.includes('phone')) {
         setErrors({ phone: backendMessage });
-      } else {
+      } else if (normalizedMessage.includes('password')) {
+        setErrors({ password: backendMessage });
+      } else if (normalizedMessage.includes('email') || normalizedMessage.includes('google')) {
         setErrors({ email: backendMessage });
+      } else {
+        setErrors({ general: backendMessage });
       }
     }
     // 4. Unsuspected error ekak nam status code eka pennanna
     else {
-      setErrors({ email: `Server error status: ${err.response.status}` });
+      setErrors({ general: `Server error (${err.response.status})` });
     }
   } finally {
     setLoading(false);
@@ -281,6 +284,12 @@ const handleSubmit = async (e) => {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="register-form">
+            {errors.general && (
+              <Alert severity="error" sx={{ mb: 2 }}>
+                {errors.general}
+              </Alert>
+            )}
+
             <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2, mb: 2 }}>
               <TextField
                 fullWidth
