@@ -35,7 +35,7 @@ export default function Home() {
       `http://localhost:5000/api/doctors/search?q=${doctorSearch}`
     );
 
-    if (response.data.length > 0) {
+    if (response.data.success && response.data.data.length > 0) {
       const params = new URLSearchParams();
       params.set("q", doctorSearch);
 
@@ -48,7 +48,7 @@ export default function Home() {
         search: params.toString(),
       });
     } else {
-      alert("No doctor found with this name.");
+      alert("This doctor is not in our CareLink group.");
     }
   } catch (error) {
     console.error(error);
